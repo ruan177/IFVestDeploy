@@ -10,6 +10,7 @@
 - npx sequeliza db:create
 - npx sequeliza db:migrate
 - nodemon index.js
+- dentro do navegador digite "http://localhost/"
 
 # Como adicionar Areas (Ex.: Mateamatica)
 - Abra o mysql workbench

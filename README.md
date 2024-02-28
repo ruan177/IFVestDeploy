@@ -24,7 +24,7 @@
 - escolha a tabela "topicos"
 - botão direito e selecione "Select rows"
 - selecione o campo "materia" e de um nome
-- selecione o campo "areaId" e coloque o id da area que o topico pertence (pode ser verificado visitando a tabela "area"
+- selecione o campo "areaId" e coloque o id da area que o topico pertence (pode ser verificado visitando a tabela "area")
 - aperte o botão "apply"
 
 # Como alterar o tipo de usuario (Ex.: professor)

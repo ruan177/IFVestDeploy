@@ -48,6 +48,6 @@ app.use('/usuario', usuarios); // usuario, usuarios(lista com os usuarios)
 app.use('/comentario', comentarios); //comentarios do usuario
 app.use('/prof', AreaProfessor);
 
-app.listen(80, ()=>{
+app.listen(process.env.PORT || 80, ()=>{
     console.log('Working on port 80!')
 });

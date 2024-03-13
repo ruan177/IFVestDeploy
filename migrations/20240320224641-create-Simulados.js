@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Usuarios', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
+          model: 'usuarios', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Areas', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
+          model: 'areas', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
           key: 'id'
         },
         onUpdate: 'CASCADE',

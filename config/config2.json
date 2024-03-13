@@ -1,0 +1,28 @@
+
+  {
+    "development": {
+      "username": "postgres",
+      "password": "residentevil6",
+      "database": "ifvest",
+      "host": "localhost",
+      "dialect": "postgres",
+      "port": "5432"
+  
+    },
+    "test": {
+      "username": "postgres",
+      "password": "residentevil6",
+      "database": "ifvest",
+      "host": "localhost",
+      "dialect": "postgres",
+      "port": "5432"
+    },
+    "production": {
+      "username": "postgres",
+      "password": "residentevil6",
+      "database": "ifvest",
+      "host": "localhost",
+      "dialect": "postgres",
+      "port": "5432"
+    }
+  }

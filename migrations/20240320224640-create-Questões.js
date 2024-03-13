@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Questões', {
+    await queryInterface.createTable('Questoes', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Topicos',
+          model: 'topicos',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -45,7 +45,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Usuarios',
+          model: 'usuarios',
           key: 'id'
         },
         onUpdate: 'CASCADE',

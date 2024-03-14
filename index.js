@@ -36,7 +36,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(express.urlencoded({extended:true}));
 
 //Define diretório para arquivos estáticos
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Define _method como parâmetro para transformar
 // de POST para PATCH ou DELETE

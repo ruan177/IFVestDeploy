@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true
       }
-    }, {});
+    }, {
+      tableName: 'questoes'
+    });
   
     Questões.associate = (models) => {
       Questões.belongsTo(models.Topico, { foreignKey: 'topicoId' });

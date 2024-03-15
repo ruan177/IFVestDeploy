@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+    },{
+      tableName: 'usuarios'
     });
   
     Usuario.associate = (models) => {

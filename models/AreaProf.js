@@ -2,7 +2,9 @@ module.exports = (sequelize, DataTypes)=>{
     const AreaProf = sequelize.define('AreaProf',{
             usuarioId: DataTypes.INTEGER,
             areaId: DataTypes.INTEGER
-        }, {});
+        }, {
+            tableName: 'areaprof'
+        });
     
         //belongsTo
         //belongsToMany

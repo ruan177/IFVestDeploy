@@ -5,7 +5,10 @@ module.exports = (sequelize, DataTypes)=>{
             sub_titulo: DataTypes.STRING,
             resumo: DataTypes.STRING,
             links: DataTypes.STRING,
-        }, {});
+        }, {
+            tableName: 'noticias'
+        }
+    );
     
         //belongsTo
         //belongsToMany

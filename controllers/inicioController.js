@@ -15,7 +15,7 @@ roteador.get('/cadastro', (req, res) => {
     res.status(200).render('cadastro');
 });
 
-roteador.get('/logoff', (req, res) => {
+roteador.post('/logoff', (req, res) => {
     req.session.destroy();
     res.redirect('/usuario/login');
 });

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <title>Responsive sidebar submenus</title>
+</head>
+
+<body>
+    <%- include('../partials/sidebar') %>
+        <!--========== CONTENTS ==========-->
+        <main>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                th,
+                td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                th {
+                    background-color: #f2f2f2;
+                }
+
+                .edit-btn {
+                    display: inline-block;
+                    padding: 10px 10px;
+                    background-color: #333;
+                    /* Cor de fundo do botão */
+                    color: #fff;
+                    /* Cor do texto do botão */
+                    text-decoration: none;
+                    /* Remove o sublinhado do link */
+                    border-radius: 4px;
+                    /* Arredonda os cantos do botão */
+                    transition: background-color 0.3s ease;
+                    /* Animação suave ao passar o mouse */
+                }
+
+                .edit-btn:hover {
+                    background-color: #0056b3;
+                    /* Cor de fundo do botão ao passar o mouse */
+                }
+            </style>
+
+
+            <h1>Questoes</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Título</th>
+                        <th>Questão</th>
+                        >
+                    </tr>
+                </thead>
+                <tbody>
+                    <% questoes.forEach(questao=> { %>
+                        <tr>
+
+                            <td>
+                                <%= questao.titulo %>
+                            </td>
+                            <td>
+                                <%= questao.pergunta %>
+                            </td>
+                            <td><a class="edit-btn" href="/professor/editar-questao/<%= questao.id %>">Editar</a></td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+
+
+
+
+            <a href="/usuario/inicioLogado">Voltar para home</a>
+            <link rel="stylesheet" href="/css/styles.css">
+        </main>
+
+        <!--========== MAIN JS ==========-->
+        <script src="/js/main.js"></script>
+</body>
+
+</html>

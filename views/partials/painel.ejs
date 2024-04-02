@@ -1,0 +1,45 @@
+<div id="painelEditor">
+    <button class="btnColor" onclick="applyCommand('justifyLeft')" type="button"><i
+            class="demo-icon icon-align-left"></i></button>
+    <button class="btnColor" onclick="applyCommand('justifyCenter')" type="button"><i
+            class="demo-icon icon-align-center"></i></button>
+    <button class="btnColor" onclick="applyCommand('justifyRight')" type="button"><i
+            class="demo-icon icon-align-right"></i></button>
+    <button class="btnColor" onclick="applyCommand('justifyFull')" type="button"><i
+            class="demo-icon icon-align-justify"></i></button>
+
+    <button class="btnColor" onclick="applyCommand('bold')" type="button"><i
+            class="demo-icon icon-bold"></i></button>
+    <button class="btnColor" onclick="applyCommand('italic')" type="button"><i
+            class="demo-icon icon-italic"></i></button>
+    <button class="btnColor" onclick="applyCommand('strikeThrough')" type="button"><i
+            class="demo-icon icon-strike"></i></button>
+    <button class="btnColor" onclick="applyCommand('underline')" type="button"><i
+            class="demo-icon icon-underline"></i></button>
+
+    <button class="btnColor" onclick="applyCommand('outdent')" type="button"><i
+            class="demo-icon icon-indent-left"></i></button>
+    <button class="btnColor" onclick="applyCommand('indent')" type="button"><i
+            class="demo-icon icon-indent-right"></i></button>
+
+    <button class="btnColor" onclick="link()"><i class="demo-icon icon-link"></i></button>
+    <button class="btnColor" onclick="applyCommand('redo')" type="button"><i
+            class="demo-icon icon-ccw"></i></button>
+    <button class="btnColor" onclick="applyCommand('undo')" type="button"><i
+            class="demo-icon icon-cw"></i></button>
+    <label for="upload"><i class="demo-icon icon-picture" type="button"></i></label>
+
+    <i class="demo-icon icon-table"></i>
+
+    <button id="fontColor" class="btnColor" type="button">F</button>
+    <button id="backColor" class="btnColor" type="button">B</button>
+    <button id="paleta" class="jscolor {valueElement:null, value:'3c8dbc'}" type="button"></button>
+
+    <select type="text" id="inputFontSize" onchange="alterFont(this.value)">
+        <option value="2">10 pt</option>
+        <option value="3">12 pt</option>
+        <option value="4">14 pt</option>
+        <option value="6">16 pt</option>
+        <option value="7">18 pt</option>
+    </select>
+</div>

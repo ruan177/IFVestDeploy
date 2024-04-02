@@ -2,7 +2,9 @@ module.exports = (sequelize, DataTypes)=>{
     const Comentario = sequelize.define('Comentario',{
             usuarioId: DataTypes.INTEGER,
             comentario: DataTypes.STRING 
-        }, {});
+        }, {
+            tableName: 'comentarios'
+        });
     
         //belongsTo
         //belongsToMany

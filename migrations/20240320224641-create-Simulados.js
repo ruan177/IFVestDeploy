@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Simulados', {
+    await queryInterface.createTable('simulados', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -18,14 +18,16 @@ module.exports = {
         allowNull: false
       },
       tipo: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.ENUM({
+          values: ['DISSERTATIVO', 'OBJETIVO', 'ALEATORIO']
+        }),
         allowNull: false
       },
       usuarioId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Usuarios', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
+          model: 'usuarios', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -35,7 +37,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Areas', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
+          model: 'areas', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -43,16 +45,18 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Simulados');
+    await queryInterface.dropTable('simulados');
   }
 };

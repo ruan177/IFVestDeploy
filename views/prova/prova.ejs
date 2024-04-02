@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Prova</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/googlef2.css">
+    <link rel="stylesheet" href="/css/textarea.css">
+
+    <title>Realização de provas</title>
+</head>
+<body>
+    <%- include('../partials/sidebar') %>
+    <main>
+       
+            <!-- Formulário para Provas Dissertativas -->    
+            <form id="questionarioDissertativa" class="form" action="/usuario/responder-prova/<%= prova.id %>" method="POST">  
+                <div class="title-div">
+                    <h1>Teste de questão <%= tipo %></h1>
+                    <!-- <h4>Redirecionamento em <span id="cronometro">0:00</span></h4> -->
+                </div>
+                <% if (tipo === "DISSERTATIVO") { %>
+                    <% for (let i = 0; i < perguntas.length; i++) { %>
+                        <div class="name-div">
+                            <div class="titulo"><p><%= perguntas[i].titulo %></p></div>
+                            <div class="name"><%- perguntas[i].pergunta %><span class="required">*</span></div>
+                            <div class="input-div"><textarea name="respostas[]" placeholder="Sua resposta"></textarea></div>
+                        </div>
+                    <% } %>
+                <% } else if (tipo === "OBJETIVO") { %>    
+                    <% for (let i = 0; i < perguntas.length; i++) { %>
+                        <div class="name-div">
+                            <div class="titulo"><p><%= perguntas[i].titulo %></p></div>
+                            <div class="name"><%- perguntas[i].pergunta %><span class="required">*</span></div>
+                            <div class="input-div">
+                                <% if (perguntas[i] && perguntas[i].resposta) { %>
+                                    <% const resposta = perguntas[i].resposta.split('_'); %>
+                                    <% for (let j = 0; j < resposta.length; j++) { %>
+                                        <input type="radio" id="resposta<%= i %><%= j %>" name="resposta[<%= i %>]" value="<%= resposta[j] %>">
+                                        <label for="resposta<%= i %><%= j %>"><%= resposta[j] %></label><br>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } %>    
+                <!-- Campos de perguntas e respostas para provas dissertativas -->
+                <div class="espaco">
+                    <button class="btn" type="submit">Enviar</button>
+                </div>
+            </form>
+       
+         
+       
+    </main>
+    
+     <!--========== MAIN JS ==========-->
+    <script src="/js/main.js"></script>
+    <script src="/js/prova.js"></script>
+</body>
+</html>

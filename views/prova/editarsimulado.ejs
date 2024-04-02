@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--========== BOX ICONS ==========-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="/css/styles.css">
+
+        <title>Responsive sidebar submenus</title>
+    </head>
+    <body>
+        <%- include('../partials/sidebar') %>
+        <!--========== CONTENTS ==========-->
+        <main>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+            <h1><%=simulado.titulo %></h1>
+       
+            <td><%= simulado.descricao %></td>
+
+            <h1>Remover Questões</h1>
+
+
+            <form action="/usuario/Simulados/<%= simulado.id %>/remover-questoes?_method=DELETE" method="POST">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Título</th>
+                            <th>Questão</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% simulado.Questões.forEach(questao => { %>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="questao-<%= questao.id %>" name="questoesSelecionadas" value="<%= questao.id %>">
+                                </td>
+                                <td><%= questao.titulo %></td>
+                                <td><%= questao.pergunta %></td>
+                               
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                   
+                </table>
+
+                <input type="hidden" name="simuladoId" value="<%= simulado.id %>">
+                <button type="submit">Remover Questões</button>
+            </form>
+            
+                <a href="/usuarios/Simulados/<%= simulado.id %>">Voltar para a simulado</a>
+    <link rel="stylesheet" href="/css/styles.css">
+        </main>
+
+        <!--========== MAIN JS ==========-->
+        <script src="/js/main.js"></script>
+    </body>
+</html>

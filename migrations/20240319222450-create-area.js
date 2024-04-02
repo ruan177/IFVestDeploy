@@ -3,7 +3,7 @@
   /** @type {import('sequelize-cli').Migration} */
   module.exports = {
     async up (queryInterface, Sequelize) {
-      await queryInterface.createTable("areas", {
+      await queryInterface.createTable('areas', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -11,8 +11,10 @@
           allowNull: false
         },
         area: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.ENUM({
+            values: ['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Artes', 'Informática', 'Química', 'Física', 'Biologia', 'Filosofia', 'Sociologia', 'Educação Física', 'Língua Estrangeira']
+          }),
+          allowNull: true,
         },
         descricao: {
           type: Sequelize.STRING,

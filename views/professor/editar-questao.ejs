@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Questão</title>
+    <!-- Adicione seus estilos e scripts aqui -->
+    <style>
+        
+    </style>
+</head>
+<body>
+    <h1>Editar Questão</h1>
+    <form action="/professor/editar-questao?_method=PUT" method="POST">
+        <input type="hidden" name="id" value="<%= questao.id %>">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" value="<%= questao.titulo %>">
+        <label for="pergunta">Questão:</label>
+        <textarea id="pergunta" name="pergunta"><%= questao.pergunta %></textarea>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

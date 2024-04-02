@@ -35,7 +35,10 @@
             <td><%= simulado.descricao %></td>
 
             <h1>Associar questoes</h1>
-
+            <form action="/usuario/simulados/<%= simulado.id %>/adicionar-questoes" method="GET">
+                <input type="text" name="pergunta" placeholder="Filtrar por pergunta">
+                <button type="submit">Pesquisar</button>
+            </form>
 
             <form action="/usuario/simulados/<%= simulado.id %>/adicionar-questoes" method="POST">
                 <table>

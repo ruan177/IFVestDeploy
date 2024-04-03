@@ -116,7 +116,7 @@ roteador.get('/criar-simulado', async (req, res) => {
 });
 
 // Rota para lidar com o envio do formulário
-roteador.post('/criar-prova', async (req, res) => {
+roteador.post('/criar-simulado', async (req, res) => {
   const { titulo, descricao, areaId, tipo } = req.body;
   const usuarioId1 = req.session.idUsuario;
   const tipoformatado = tipo.toUpperCase()

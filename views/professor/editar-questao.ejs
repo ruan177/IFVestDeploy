@@ -11,7 +11,7 @@
 </head>
 <body>
     <h1>Editar Questão</h1>
-    <form action="/professor/editar-questao?_method=PUT" method="POST">
+    <form action="/professor/editar-questao?_method=PATCH" method="POST">
         <input type="hidden" name="id" value="<%= questao.id %>">
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" value="<%= questao.titulo %>">

@@ -67,13 +67,13 @@ roteador.get('/cadastro', (req, res) => {
 });
 
 roteador.post('/cadastro', async (req, res) => {
-    const { nome, usuario, senha, email, email_secundario } = req.body;
+    const { nome, usuario, senha, email, perfil } = req.body;
     try{
-        if( !nome || !usuario || !senha || !email){
-            console.log(nome, usuario, senha, email)
+        if( !nome || !usuario || !senha || !email || !perfil){
+            console.log(nome, usuario, senha, email, perfil)
             throw new Error("Dados Invalidos")
         }
-        await Usuario.create({ nome, usuario, senha, email, email_secundario });
+        await Usuario.create({ nome, usuario, senha, email, perfil });
 
         res.status(201).redirect('/login');
     }catch(err){

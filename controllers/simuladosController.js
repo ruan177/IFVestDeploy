@@ -5,6 +5,7 @@ const { Topico } = require('../models');
 const { Simulados } = require('../models');
 const { Questões } = require('../models');
 const { Area } = require('../models');
+const { Opcao } = require('../models');
 const { PerguntasProvas } = require('../models');
 const { Resposta } = require('../models');
 const roteador = Router()
@@ -39,10 +40,33 @@ roteador.get('/visualizar/:tipo', async (req, res) => {
 
     const simulados = await Simulados.findAll({
       where: {
-        tipo: tipo
+        tipo: tipo,
+        '$Questões.id$': {
+          [Op.not]: null
+        },
+        '$Usuario.perfil$': 'PROFESSOR'
       },
-      include: Questões
+      include: [
+        {
+          model: Questões,
+          as: 'Questões'
+        },
+        {
+          model: Area,
+          as: 'Area',
+
+        },
+        {
+          model: Usuario, // Inclui o modelo Usuario para acessar o perfil do usuário
+          as: 'Usuario', // Ajuste conforme necessário, dependendo de como você configurou a associação
+          attributes: ['perfil'], // Seleciona apenas o campo 'perfil' do usuário
+          where: {
+            perfil: 'PROFESSOR' // Garante que apenas usuários com perfil 'PROFESSOR' sejam incluídos
+          }
+        }
+      ]
     });
+    console.log(JSON.stringify(simulados))
 
     //  res.send(JSON.stringify(simulados))
     res.render('simulado/simulados', { simulados });
@@ -61,12 +85,14 @@ roteador.get('/:simuladoId/editar', async (req, res) => {
         id: simuladoId
       },
       include: [
-        {model: Questões,
-        as: 'Questões'}
+        {
+          model: Questões,
+          as: 'Questões'
+        }
       ]
     });
 
-    res.render('prova/editarsimulado', { simulado   });
+    res.render('prova/editarsimulado', { simulado });
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao carregar formulário de associação de pergunta');
@@ -97,34 +123,34 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
 
     let questoes;
     if (pergunta) {
-        // Se houver um texto de pesquisa, filtra as questões que contêm o texto de filtragem
-        questoes = await Questões.findAll({
-          where: {
-            id: {
-              [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
-            },
-            pergunta: {
-              [Op.like]: '%' + pergunta + '%' // Filtra questões que contêm o texto de filtragem
-            }
+      // Se houver um texto de pesquisa, filtra as questões que contêm o texto de filtragem
+      questoes = await Questões.findAll({
+        where: {
+          id: {
+            [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
           },
-          include: [{
-            model: Topico,
-            as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
-          }]
-        });
+          pergunta: {
+            [Op.like]: '%' + pergunta + '%' // Filtra questões que contêm o texto de filtragem
+          }
+        },
+        include: [{
+          model: Topico,
+          as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
+        }]
+      });
     } else {
-        // Se não houver um texto de pesquisa, retorna todas as questões disponíveis
-        questoes = await Questões.findAll({
-          where: {
-            id: {
-              [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
-            }
-          },
-          include: [{
-            model: Topico,
-            as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
-          }]
-        });
+      // Se não houver um texto de pesquisa, retorna todas as questões disponíveis
+      questoes = await Questões.findAll({
+        where: {
+          id: {
+            [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
+          }
+        },
+        include: [{
+          model: Topico,
+          as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
+        }]
+      });
     }
 
     res.render('prova/associarperguntasimulado', { simulado, questoes });
@@ -139,62 +165,62 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
 
 //   //rota testa e funciona
 //   // Rota para processar o formulário de associação de pergunta a questionário
-  roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
-    try {
-      const { simuladoId } = req.params;
-      const { questoesSelecionadas } = req.body;
+roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
+  try {
+    const { simuladoId } = req.params;
+    const { questoesSelecionadas } = req.body;
 
-      // Primeiro, verifique se o questionário e a pergunta existem
-      const simulado = await Simulados.findByPk(simuladoId);
-     
-      if (!simulado) {
-        return res.status(404).send('Simulado não encontrado.');
-      }
-      if (!questoesSelecionadas) {
-        return res.status(404).send('Questões não selecionadas.');
-      }
-  
-      // Agora, associe as questões ao simulado usando o método addQuestões
-      // Este método deve ser definido em sua associação Sequelize entre Simulados e Questões
-      await simulado.addQuestões(questoesSelecionadas);
-  
+    // Primeiro, verifique se o questionário e a pergunta existem
+    const simulado = await Simulados.findByPk(simuladoId);
 
-      res.redirect(`/usuario/simulados/`);
-    } catch (error) {
-      console.error('Erro ao associar Questões a questionário:', error);
-      res.status(500).send('Erro ao associar Questões a questionário.');
+    if (!simulado) {
+      return res.status(404).send('Simulado não encontrado.');
     }
-  });
-
-  roteador.delete('/:simuladoId/remover-questoes', async (req, res) => {
-    try {
-        const { simuladoId } = req.params;
-        const { questoesSelecionadas } = req.body;
-
-        // Primeiro, verifique se o simulado existe
-        const simulado = await Simulados.findByPk(simuladoId, {
-          include: [{
-              model: Questões,
-              as: 'Questões'
-          }]
-      });
-
-        if (!simulado) {
-            return res.status(404).send('Simulado não encontrado.');
-        }
-        if (!questoesSelecionadas || questoesSelecionadas.length === 0) {
-            return res.status(404).send('Questões não selecionadas.');
-        }
-
-        // Agora, remova as questões do simulado usando o método removeQuestoes
-        // Este método é fornecido pelo Sequelize para associações belongsToMany
-        await simulado.removeQuestões(questoesSelecionadas);
-
-        res.redirect(`/usuario/simulados/`);
-    } catch (error) {
-        console.error('Erro ao remover Questões do questionário:', error);
-        res.status(500).send('Erro ao remover Questões do questionário.');
+    if (!questoesSelecionadas) {
+      return res.status(404).send('Questões não selecionadas.');
     }
+
+    // Agora, associe as questões ao simulado usando o método addQuestões
+    // Este método deve ser definido em sua associação Sequelize entre Simulados e Questões
+    await simulado.addQuestões(questoesSelecionadas);
+
+
+    res.redirect(`/usuario/simulados/`);
+  } catch (error) {
+    console.error('Erro ao associar Questões a questionário:', error);
+    res.status(500).send('Erro ao associar Questões a questionário.');
+  }
+});
+
+roteador.delete('/:simuladoId/remover-questoes', async (req, res) => {
+  try {
+    const { simuladoId } = req.params;
+    const { questoesSelecionadas } = req.body;
+
+    // Primeiro, verifique se o simulado existe
+    const simulado = await Simulados.findByPk(simuladoId, {
+      include: [{
+        model: Questões,
+        as: 'Questões'
+      }]
+    });
+
+    if (!simulado) {
+      return res.status(404).send('Simulado não encontrado.');
+    }
+    if (!questoesSelecionadas || questoesSelecionadas.length === 0) {
+      return res.status(404).send('Questões não selecionadas.');
+    }
+
+    // Agora, remova as questões do simulado usando o método removeQuestoes
+    // Este método é fornecido pelo Sequelize para associações belongsToMany
+    await simulado.removeQuestões(questoesSelecionadas);
+
+    res.redirect(`/usuario/simulados/`);
+  } catch (error) {
+    console.error('Erro ao remover Questões do questionário:', error);
+    res.status(500).send('Erro ao remover Questões do questionário.');
+  }
 });
 
 
@@ -204,84 +230,166 @@ roteador.get('/:simuladoId/fazer', async (req, res) => {
   try {
     const simuladoId = req.params.simuladoId;
 
-    // Busque as perguntas da prova específica usando o modelo PerguntasProvas
-    const perguntasProvas = await PerguntasProvas.findAll({
-      where: { provaId: simuladoId },
+    const simulado = await Simulados.findByPk(simuladoId, {
+      include: [{
+        model: Questões,
+        as: 'Questões', // Certifique-se de que este alias corresponda ao definido na associação
+        include: [{
+          model: Opcao,
+          as: 'Opcoes' // Certifique-se de que este alias corresponda ao definido na associação
+        }]
+      }]
     });
-    console.log("perguntas:", perguntasProvas)
 
-    // Crie um array para armazenar os detalhes das perguntas
-    const perguntas = [];
 
-    // Para cada entrada em perguntasProvas, busque os detalhes da pergunta usando o modelo Questões
-    for (const perguntaProva of perguntasProvas) {
-      const perguntaDetalhe = await Questões.findByPk(perguntaProva.QuestõesId);
-      perguntas.push(perguntaDetalhe);
-    }
 
-    const prova = await Simulados.findByPk(simuladoId);
-    console.log("prova:", prova)
+    res.render('prova/prova', { simulado });
 
-    // Verifique se o simulado foi encontrado e inclua o tipo de prova na resposta
-    if(prova){
-      res.render('prova/prova', { perguntas, prova, tipo: prova.tipo });
-    }else{
-      res.status(404).send('Simulado não encontrado.');
-    }
   } catch (error) {
     console.error('Erro ao buscar perguntas da prova:', error);
     res.status(500).send('Erro ao buscar perguntas da prova.');
   }
 });
 
-roteador.post('/responder-prova/:provaId', async (req, res) => {
-  const { respostas } = req.body;
-  const { idUsuario } = req.session;
-  const { provaId } = req.params;
-  const respostaConcatenada = respostas.join(',');
+
+roteador.get('/:simuladoId/gabarito', async (req, res) => {
+  const userId = req.session.idUsuario;
+  const simuladoId = req.params.simuladoId; 
+  try {
+    const simulado = await Simulados.findByPk(simuladoId, {
+      include: [{
+         model: Questões,
+         as: 'Questões',
+         include: [{
+           model: Opcao,
+           as: 'Opcoes',
+           where: { correta: true } // Inclui apenas as opções corretas
+         }, 
+         ]}],
+     })
+ 
+     const questoesComOpcoesCorretas = simulado.Questões;
+
+   // Consulta as respostas do usuário para cada questão
+   const respostasDoUsuario = await Resposta.findAll({
+      where: {
+        usuarioId: userId,
+        questaoId: { [Op.in]: questoesComOpcoesCorretas.map(q => q.id) }
+      },
+      include: [{
+        model: Opcao,
+        as: 'opcao',
+        required: true
+      }],
+      order: [['createdAt', 'DESC']], 
+
+   });
+
+   // Prepara os dados para a view
+   const dadosParaView = {
+      questoes: questoesComOpcoesCorretas,
+      respostasUsuario: respostasDoUsuario,
+      simulado: simulado
+   };
+
+   // Renderiza a view com os dados preparados
+   res.render('prova/gabaritoProva', dadosParaView);
+ 
+    //  res.render('prova/gabaritoProva', { simulado });
+ 
+  } catch (error) {
+     console.error('Erro ao buscar o gabarito da prova:', error);
+     res.status(500).send('Erro ao buscar o gabarito da prova.');
+  }
+ });
+function formatBrazilianDate(date) {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+
+roteador.post('/search', async (req, res) => {
+  const searchTerm = req.body.searchTerm.toLowerCase();
 
   try {
-    await Resposta.create({
-      resposta: respostaConcatenada,
-      usuarioId: idUsuario,
-      provaId,
+    // Busque todos os simulados usando o modelo Simulados
+    const simulados = await Simulados.findAll();
+
+    // Filtrando os resultados pelo nome ou data
+    const results = simulados.filter(simulado => {
+      const formattedDate = formatBrazilianDate(simulado.createdAt);
+      return simulado.titulo.toLowerCase().includes(searchTerm) || formattedDate.includes(searchTerm);
     });
 
-    return res.redirect('/usuario/inicioLogado');
+    res.render('simulado/pesquisa', { simulados: results, searchTerm, });
+  } catch (error) {
+    console.error('Erro ao buscar simulados:', error);
+    res.status(500).send('Erro ao buscar simulados.');
+  }
+  //topico e area
+});
+
+
+
+roteador.post('/responder-prova/:provaId', async (req, res) => {
+  const { questoes, respostas } = req.body;
+  const { idUsuario } = req.session;
+  const { provaId } = req.params;
+  const respostasDissertativas = respostas;
+
+ //const simulado =  await Simulados.findByPk(provaId)
+  try {
+    if (questoes && Object.keys(questoes).length > 0) {
+
+      const questoesObj = questoes.reduce((acc, item) => {
+        const [questaoId, opcaoId] = item.split('-');
+        acc[questaoId] = opcaoId;
+        return acc;
+      }, {});
+
+      for (let questaoId in questoesObj) {
+        const opcaoId = questoesObj[questaoId];
+
+        await Resposta.create({
+          resposta: "", // O ID da opção é salvo no campo resposta
+          tipo: 'OBJETIVA',
+          opcaoId: opcaoId,
+          usuarioId: idUsuario, // Ajuste conforme necessário
+          provaId: provaId, // Ajuste conforme necessário
+          questaoId: questaoId,
+        });
+      }
+    }
+
+    // Processa as respostas dissertativas, se houver
+    if (respostasDissertativas && Object.keys(respostasDissertativas).length > 0) {
+      for (let key in respostasDissertativas) {
+        const questaoId = key.replace('questao_', '');
+        const resposta = respostasDissertativas[key];
+
+        await Resposta.create({
+          resposta: resposta,
+          tipo: 'DISSERTATIVA',
+          usuarioId: idUsuario, // Ajuste conforme necessário
+          provaId: provaId, // Ajuste conforme necessário
+          questaoId: questaoId,
+        });
+      }
+    }
+
+
+    // if(simulado.tipo === "OBJETIVO"){
+    //   return res.redirect(`/usuario/Simulados/${provaId}/gabarito`);
+    // }
+    
+    return res.redirect(`/usuario/Simulados/${provaId}/gabarito`);
+    // substituir por um redirect para a pagina do gabarito
   } catch (error) {
     console.error('Erro ao salvar respostas associadas:', error);
     return res.status(500).send('Erro ao salvar respostas associadas.');
   }
 });
-function formatBrazilianDate(date) {
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    }
-  
-
-  roteador.post('/search', async (req, res) => {
-    const searchTerm = req.body.searchTerm.toLowerCase();
-
-    try {
-      // Busque todos os simulados usando o modelo Simulados
-      const simulados = await Simulados.findAll();
-
-      // Filtrando os resultados pelo nome ou data
-      const results = simulados.filter(simulado => {
-        const formattedDate = formatBrazilianDate(simulado.createdAt);
-        return simulado.titulo.toLowerCase().includes(searchTerm) || formattedDate.includes(searchTerm);
-      });
-
-      res.render('simulado/pesquisa', { simulados: results, searchTerm, });
-    } catch (error) {
-      console.error('Erro ao buscar simulados:', error);
-      res.status(500).send('Erro ao buscar simulados.');
-    }
-    //topico e area
-  });
-
-//  
 
 module.exports = roteador;

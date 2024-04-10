@@ -29,34 +29,16 @@
                 th {
                     background-color: #f2f2f2;
                 }
-
-                /* Estilo para o botão de pesquisa */
-                .header__search button {
-                    border: 0px solid #000; /* Define a cor e a espessura do contorno */
-                    background-color: transparent; /* Torna o fundo transparente */
-                    padding: 5px; /* Adiciona um pouco de espaço ao redor do ícone */
-                    cursor: pointer; /* Muda o cursor para um ponteiro quando passa sobre o botão */
-                }
-
-                /* Estilo para o ícone da lupa */
-                .header__search .header__icon {
-                    color: #000; /* Define a cor do ícone */
-                }
             </style>
             <h1><%=simulado.titulo %></h1>
        
             <td><%= simulado.descricao %></td>
 
             <h1>Associar questoes</h1>
-
-            <!-- Campo de entrada para filtrar questões por pergunta -->
             <form action="/usuario/simulados/<%= simulado.id %>/adicionar-questoes" method="GET">
-                <div class="header__search">
-                    <input type="search" name="pergunta" placeholder="Filtra por pergunta" class="header__input">
-                    <button type="submit"><i class='bx bx-search header__icon'></i></button>
-                </div>
+                <input type="text" name="pergunta" placeholder="Filtrar por pergunta">
+                <button type="submit">Pesquisar</button>
             </form>
-
 
             <form action="/usuario/simulados/<%= simulado.id %>/adicionar-questoes" method="POST">
                 <table>
@@ -85,7 +67,7 @@
                 <input type="hidden" name="simuladoId" value="<%= simulado.id %>">
                 <button type="submit">Associar Questões</button>
             </form>
-                <a href="/usuario/Simulados">Voltar para a simulado</a>
+                <a href="/usuario/inicioLogado">Voltar para a simulado</a>
     <link rel="stylesheet" href="/css/styles.css">
         </main>
 

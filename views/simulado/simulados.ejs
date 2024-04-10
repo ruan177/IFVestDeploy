@@ -66,8 +66,9 @@
             <table>
                 <thead>
                     <tr>
-                                                <th>Título</th>
+                        <th>Título</th>
                         <th>Descricao</th>
+                        <th>Area</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -76,16 +77,13 @@
                         <tr>
                             <td><%= simulado.titulo %></td>
                             <td><%= simulado.descricao %></td>
+                            <td><%= simulado.Area.area %></td>
                             <td>
-                                <% if ( simulado.Questões.length > 0) { %>
+                              
                                     <a href="/usuario/simulados/<%= simulado.id %>/fazer" class="simulado-icon">
                                         <i class="fas fa-play"></i> Fazer Simulado
                                     </a>
-                                <% } else { %>
-                                    <a class="simulado-icon simulado-icon-disabled">
-                                        <i class="fas fa-play"></i> Fazer Simulado
-                                    </a>
-                                <% } %>
+                        
                        
                             </td>
                         </tr>

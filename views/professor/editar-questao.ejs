@@ -1,23 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Questão</title>
-    <!-- Adicione seus estilos e scripts aqui -->
-    <style>
-        
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <title>Responsive sidebar submenus</title>
+
+    <link rel="stylesheet" href="/css/editor.css">
+    <link rel="stylesheet" href="/css/icons.css">
+
+     <!-- Enhanced CSS for .resposta-item -->
+     <style>
+        .resposta-item {
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Align items vertically in the center */
+            gap: 10px; /* Add some space between the elements */
+            padding: 10px; /* Add padding for better spacing */
+            border: 1px solid #ccc; /* Add a border for visual separation */
+            border-radius: 5px; /* Add rounded corners for a softer look */
+            margin-bottom: 10px; /* Add some space between each item */
+        }
+
+        .resposta-item input[type="text"] {
+            flex-grow: 1; /* Allow the input field to take up available space */
+            padding: 5px; /* Add padding inside the input field */
+            border: 1px solid #ccc; /* Add a border for the input field */
+            border-radius: 5px; /* Add rounded corners for the input field */
+        }
+
+        .resposta-item button {
+            background-color: #007bff; /* Set a background color for the button */
+            color: white; /* Set the text color */
+            border: none; /* Remove the default button border */
+            padding: 5px 10px; /* Add padding inside the button */
+            border-radius: 5px; /* Add rounded corners for the button */
+            cursor: pointer; /* Change the cursor to a pointer when hovering */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .resposta-item button:hover {
+            background-color: #0056b3; /* Darken the background color on hover */
+        }
+        main {
+        margin-top: 60px; /* Ajuste este valor conforme necessário */
+    }
     </style>
+    
+    
 </head>
+
 <body>
-    <h1>Editar Questão</h1>
-    <form action="/professor/editar-questao?_method=PATCH" method="POST">
-        <input type="hidden" name="id" value="<%= questao.id %>">
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" value="<%= questao.titulo %>">
-        <label for="pergunta">Questão:</label>
-        <textarea id="pergunta" name="pergunta"><%= questao.pergunta %></textarea>
-        <button type="submit">Salvar</button>
-    </form>
+
+    <%- include('../partials/sidebar') %>
+        <main>
+            <div class="container">
+            
+            <h1>Editar Questão</h1>
+            <form action="/professor/editar-questao?_method=PATCH" method="POST">
+                <input type="hidden" id="id" name="id" value="<%= questao.id %>" >
+                <div class="titulo">
+                    <label for="titulo">TITULO:</label>
+                    <input type="text" id="titulo" name="titulo" value="<%= questao.titulo %>" required>
+                </div>
+                
+
+              
+
+
+                <input type="file" id="upload" hidden />
+
+                <div id="parentEditor">
+                    <%- include('../partials/painel') %>
+
+                    <div id="editor" contenteditable="true">
+                         <%= questao.pergunta %>
+                    </div>
+                </div>
+                    <% if (questao.tipo === "OBJETIVA" ) { %>
+                        <div id="respostas-container">
+                            <span> Adicione as alternativas e selecione apenas a(s) resposta(s) correta(s)</span>
+                          
+                            <% questao.Opcoes.forEach((opcao, index) => { %>
+                                <div class="resposta-item">
+                                <input type="checkbox" name="correta[]" value="<%= opcao.id %>"> 
+                                <input type="text" name="opcoes[<%= opcao.id %>]" placeholder="Sua resposta" value="<%= opcao.id %>-<%= opcao.descricao %>" >
+                            </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                        <% } else { %>
+                            <label for="descricao">Resposta :</label>
+                            <textarea id="descricao" name="resposta" rows="5" cols="50" required> <%= questao.resposta %></textarea>
+                            <% } %>
+                       
+                        <div style=" margin-left: 10.5rem;">
+                            <input type="hidden" id="pergunta" name="pergunta">
+
+          
+
+                            <label for="topicoId">Selecione um topico:</label>
+                            <select name="topicoId" id="topicoId"> 
+                                <% Topicos.forEach(topico=> { %>
+                                    <option value="<%= topico.id %>">
+                                        <%= topico.materia %>
+                                    </option>
+                                    <% }); %>
+                            </select>
+                            </div>
+                            <div style=" margin-left: 4rem;">
+
+                        </div>
+                        
+                      
+                        <button type="submit">Registrar</button>
+            </form>
+ 
+            </div>
+        </div>
+        </main>
+     
+  
+        <script>
+
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var editor = document.getElementById('editor');
+                var perguntaInput = document.getElementById('pergunta');
+
+            
+            
+                editor.addEventListener('input', function() {
+                    var perguntaTexto = editor.innerHTML.trim().replace(/\s+/g, ' ');
+                    perguntaInput.value = perguntaTexto;
+                    console.log(perguntaInput.value)
+                });
+            });
+            </script>
+        <!--========== MAIN JS ==========-->
+        <script src="/js/main.js"></script>
+
+        <script src="/js/jscolor.min.js"></script>
 </body>
+
 </html>

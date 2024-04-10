@@ -7,7 +7,8 @@ module.exports = {
       nome: 'ruan',
       usuario: 'ruan177',
       email: 'email@exemplo.com',
-      senha: '123', // Certifique-se de usar uma senha segura e considerar a criptografia
+      senha: '123',
+       // Certifique-se de usar uma senha segura e considerar a criptografia
       createdAt: new Date(),
       updatedAt: new Date()
     };

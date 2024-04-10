@@ -61,10 +61,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th></th>
                         <th>Título</th>
                         <th>Questão</th>
-                        >
+                        <th>Topico</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,6 +76,9 @@
                             </td>
                             <td>
                                 <%= questao.pergunta %>
+                            </td>
+                            <td>
+                                <%= questao.Topico.materia %>
                             </td>
                             <td><a class="edit-btn" href="/professor/editar-questao/<%= questao.id %>">Editar</a></td>
                         </tr>

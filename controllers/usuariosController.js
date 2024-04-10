@@ -44,43 +44,57 @@ roteador.get('/inicioLogado', async (req, res) => {
 
 
 //rota de alterar funciona
-roteador.patch('/:id', async (req, res) => {
-  let { senha } = req.body;
+roteador.get('/editar', async (req, res) => {
+  const id = req.session.idUsuario;
+
+  const usuario = await Usuario.findByPk(id);
+  // Renderiza a página de edição com os dados do usuário
+  res.status(200).render('usuario/editar', {usuario});
+ });
+
+//rota de alterar funciona
+roteador.patch('/editar/:id', async (req, res) => {
   try {
-    console.log(senha)
-    const id = req.session.idUsuario;
-    console.log(id)
+     // Coletando os dados do corpo da requisição
+     const { senha, nome, usuario, email } = req.body;
+ 
+     // Obtendo o ID do usuário da sessão
+     const id = req.session.idUsuario;
+ 
+     // Obtendo o ID do usuário do parâmetro da URL
+     const idUsuarioParaEditar = Number(req.params.id)
 
-    if (id != req.params.id) {
-      throw new Error("Erro ao atualizar usuario")
-    }
 
-    const usuario = await Usuario.findOne({
-      where: {
-        id: req.params.id
-      }
-    })
-    console.log(usuario)
-
-    if (!usuario) {
-      throw new Error("Usuario não existe")
-    }
-
-    await Usuario.update({ senha: senha },
-      {
-        where: { id: usuario.id }
-      }
-    );
-    req.session.destroy();
-    res.status(200).redirect("/login");
+ 
+     // Verificando se o ID da sessão é igual ao ID do parâmetro da URL
+     if (id !== idUsuarioParaEditar) {
+         // Se os IDs forem diferentes, retorna uma resposta com status 403
+         return res.status(403).send('Você não tem permissão para editar este perfil.');
+     }
+ 
+     // Atualizando o usuário com os novos dados
+     await Usuario.update({
+         senha: senha,
+         nome: nome,
+         usuario: usuario,
+         email: email
+       },
+       {
+         where: { id: idUsuarioParaEditar } // Use o ID do parâmetro da URL aqui
+       }
+     );
+ 
+     // Destruindo a sessão e redirecionando para a página de login
+     req.session.destroy();
+     return res.status(200).redirect("/login");
   } catch (err) {
-    req.session.destroy();
-    res.status(500).redirect('/inicio');
+     console.error(err);
+     // Destruindo a sessão e redirecionando para a página inicial em caso de erro
+     req.session.destroy();
+     return res.status(500).redirect('/inicio');
   }
-
-
-});
-
+ });
+ 
 
 //rota de deletar funciona
 roteador.delete('/:id', async (req, res) => {

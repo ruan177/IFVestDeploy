@@ -12,6 +12,12 @@
         <link rel="stylesheet" href="/css/styles.css">
         <link rel="stylesheet" href="/css/perfilFinal.css">
 
+        <style>
+          .link-branco {
+              color: white;
+          }
+        </style>
+
         <title>Responsive sidebar submenus</title>
     </head>
     <body>
@@ -21,14 +27,16 @@
 
                 <div class="flex-child magenta">
                     <div class="image-container">
-                    <img src="/img/1.jpg" alt="Descrição da imagem">
-                    <div class="text"><%= usuario.nome %></div>
+                    <img src="/img/Nilo_Peçanha_02.jpg" alt="Descrição da imagem">
+                    <!-- <div class="text"><%= usuario.nome %></div> -->
                     </div>
                     <div class="w3-container cor">
-                        <p><i class="fa fa-bookmark-o fa-fw "></i><%= usuario.perfil %></p>
+                        <p><i class="fa fa-bookmark-o fa-fw "></i><%= usuario.perfil %> : <%= usuario.nome %></p>
                         <p><i class="fa fa-home fa-fw"></i>Brasil</p>
                         <p><i class="fa fa-envelope fa-fw"></i><%= usuario.email %></p>
+                        
                         <hr>
+                        <p><i class="fa fa-bookmark-o fa-fw "></i><a href="/usuario/editar" class="link-branco" >Editar Perfil</a></p>
                         <br>
                       </div>
                 </div>

@@ -4,55 +4,69 @@
     <title>Prova</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!--========== BOX ICONS ==========-->
+    <!-- Adicione aqui os links para os estilos CSS necessários -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
-    <!--========== CSS ==========-->
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/googlef2.css">
     <link rel="stylesheet" href="/css/textarea.css">
+    <style>
+        .opcao{
+            display: flex;
+            place-content: start;
+            margin-left: 2rem;
+        }
+        .letra {
+    margin-right: 10px; /* Ajuste o valor conforme necessário */
+}
 
-    <title>Realização de provas</title>
+.radio-input {
+    margin-right: 10px; /* Ajuste o valor conforme necessário */
+}
+
+
+    </style>
 </head>
 <body>
     <%- include('../partials/sidebar') %>
     <main>
-        <form id="questionarioDissertativa" class="form" action="/usuario/simulados/responder-prova/<%= prova.id %>" method="POST">  
+
+
+        <form id="questionario" class="form" action="/usuario/simulados/responder-prova/<%= simulado.id %>" method="POST">
             <div class="title-div">
-                <h1>Teste de questões <%= tipo %></h1>
+                <h1>Teste de questões <%= simulado.tipo %></h1>
             </div>
-            <% if (tipo === "DISSERTATIVO") { %>
-                <% perguntas.forEach(pergunta => { %>
+            <% simulado.Questões.forEach(questao => { %>
+
                     <div class="name-div">
-                        <div class="titulo"><p><%= pergunta.titulo %></p></div>
-                        <div class="name"><%- pergunta.pergunta %><span class="required">*</span></div>
-                        <div class="input-div"><textarea name="respostas[]" placeholder="Sua resposta"></textarea></div>
-                    </div>
-                <% }) %>
-            <% } else if (tipo === "OBJETIVO") { %>
-                <% perguntas.forEach(pergunta => { %>
-                    <div class="name-div">
-                        <div class="titulo"><p><%= pergunta.titulo %></p></div>
-                        <div class="name"><%- pergunta.pergunta %><span class="required">*</span></div>
-                        <div class="input-div">
-                            <% if (pergunta.resposta) { %>
-                                <% pergunta.resposta.split('_').forEach((resposta, index) => { %>
-                                    <input type="radio" id="resposta<%= index %>" name="resposta[<%= index %>]" value="<%= resposta %>">
-                                    <label for="resposta<%= index %>"><%= resposta %></label><br>
+                        <div class="titulo"><p><%= questao.titulo %></p></div>
+                        <div class="name"><%- questao.pergunta %><span class="required">*</span></div>
+                       
+                            <% if (questao.tipo === "OBJETIVA") { %>
+                                <% const letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']; %>
+                                <% questao.Opcoes.forEach((opcao, index) => { %>
+                                    <div class="opcao">
+                                        <label  class="letra" for="opcao<%= opcao.id %>"><%= letras[index] %>)</label>
+                                        <input class="radio-input" type="radio" id="opcao<%= opcao.id %>" name="questoes[<%= questao.id %>]" value="<%= questao.id %>-<%= opcao.id %>">
+                                        <label  class="opcao-texto" for="opcao<%= opcao.id %>"><%= opcao.descricao %></label>
+                                    </div>
                                 <% }) %>
-                            <% } %>
-                        </div>
-                    </div>
-                <% }) %>
-            <% } %>
+                    <% } else if (questao.tipo === "DISSERTATIVA") { %>
+                      
+                            <textarea name="respostas[questao_<%= questao.id %>]" placeholder="Sua resposta">
+
+                            </textarea>
+                       
+
+                    <% } %>
+                     </div>
+               
+            <% }) %>
             <div class="espaco">
                 <button class="btn" type="submit">Enviar</button>
             </div>
         </form>
     </main>
-    
-     <!--========== MAIN JS ==========-->
+    <!-- Adicione aqui os scripts JS necessários -->
     <script src="/js/main.js"></script>
     <script src="/js/prova.js"></script>
 </body>

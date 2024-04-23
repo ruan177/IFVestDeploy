@@ -75,14 +75,7 @@
                 <label for="descricao">Descricao:</label>
                 <textarea id="descricao" name="descricao" rows="5" cols="50" required></textarea>
 
-                <label for="areaId">Selecione uma area:</label>
-                <select name="areaId" id="areaId">
-                    <% areas.forEach(area=> { %>
-                        <option value="<%= area.id %>">
-                            <%= area.area %>
-                        </option>
-                        <% }); %>
-                </select>
+
 
                 <label for="tipo">Selecione o tipo:</label>
                 <select name="tipo" id="tipo">

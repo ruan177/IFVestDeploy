@@ -3,7 +3,7 @@ const methodOverride = require('method-override');
 const session = require('express-session');
 const { Usuario } = require('./models');
 
-const { comentarios, usuarios, AreaProfessor, inicio, professor } = require('./controllers');
+const { comentarios, usuarios, AreaProfessor, inicio, professor, uploads } = require('./controllers');
 
 const app = express();
 
@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 //Define diretório para arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 //Define _method como parâmetro para transformar
 // de POST para PATCH ou DELETE
 app.use(methodOverride('_method'));
@@ -45,7 +45,8 @@ app.use(async (req, res, next) => {
     if (req.session.perfil) {
 
         res.locals.perfilUsuario = req.session.perfil;
-
+        res.locals.nomeUsuario = req.session.nomeUsuario;
+        res.locals.imagemPerfil = req.session.imagemPerfil;
     } else {
         console.log('ID de usuário não está definido na sessão');
     }
@@ -56,7 +57,8 @@ app.use(async (req, res, next) => {
 app.use('/', inicio);
 app.use(secure_pass);
 app.use('/usuario', usuarios);
-app.use('/professor', professor); /// usuario, usuarios(lista com os usuarios)
+app.use('/professor', professor);
+app.use("/uploads",  uploads) /// usuario, usuarios(lista com os usuarios)
 // app.use('/comentario', comentarios); //comentarios do usuario
 // app.use('/prof', AreaProfessor);
 

@@ -9,17 +9,17 @@ module.exports = {
       { tipo: 'ALEATORIO', titulo: 'Simulado Aleatório', descricao: 'Descrição para o simulado aleatório.' }
     ];
     // Definindo os IDs das áreas
-    const areaIds = [1, 2, 3];
+
     // Definindo o usuário ID
     const usuarioId = 1;
 
     // Loop para inserir um simulado de cada tipo para cada área
     for (const simulado of simulados) {
-      for (const areaId of areaIds) {
+  
         await queryInterface.sequelize.query(
-          `INSERT INTO "simulados" ("titulo", "descricao", "tipo", "usuarioId", "areaId", "createdAt", "updatedAt") VALUES ('${simulado.titulo}', '${simulado.descricao}', '${simulado.tipo}', ${usuarioId}, ${areaId}, NOW(), NOW())`
+          `INSERT INTO "simulados" ("titulo", "descricao", "tipo", "usuarioId",  "createdAt", "updatedAt") VALUES ('${simulado.titulo}', '${simulado.descricao}', '${simulado.tipo}', ${usuarioId}, NOW(), NOW())`
         );
-      }
+      
     }
  },
 

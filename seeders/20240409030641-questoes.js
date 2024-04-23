@@ -5,8 +5,7 @@ const { Questões, Opcao } = require('../models');
 const questoesMatematicaEnem = [
   {
     pergunta: 'Qual é o valor de x na equação 2x + 5 = 15?',
-    titulo: 'Cálculo de x',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Cálculo de x', // Substitua pelo ID do tópico apropriado
     usuarioId: 1,
     resposta:"", // Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -19,8 +18,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Qual é a área de um triângulo com base de 6 metros e altura de 8 metros?',
-    titulo: 'Área de triângulo',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Área de triângulo', // Substitua pelo ID do tópico apropriado
     usuarioId: 1,
     resposta:"", // Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -33,8 +31,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Se um produto custa R$ 120 e seu preço sobe 20%, qual será o novo preço?',
-    titulo: 'Aumento de preço',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Aumento de preço', // Substitua pelo ID do tópico apropriado
     usuarioId: 1, 
     resposta:"",// Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -47,8 +44,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Qual é a solução da equação 3x² - 12x + 9 = 0?',
-    titulo: 'Equação quadrática',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Equação quadrática', // Substitua pelo ID do tópico apropriado
     usuarioId: 1,
     resposta:"", // Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -61,8 +57,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Qual é a soma dos ângulos internos de um hexágono?',
-    titulo: 'Soma dos ângulos internos',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Soma dos ângulos internos', // Substitua pelo ID do tópico apropriado
     usuarioId: 1,
     resposta:"", // Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -75,8 +70,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Se um número é aumentado em 25% e o resultado é 50, qual é o número original?',
-    titulo: 'Número aumentado',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Número aumentado', // Substitua pelo ID do tópico apropriado
     usuarioId: 1, 
     resposta:"",// Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -89,8 +83,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Qual é o volume de um cubo com aresta de 3 metros?',
-    titulo: 'Volume de cubo',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Volume de cubo', // Substitua pelo ID do tópico apropriado
     usuarioId: 1, 
     resposta:"",// Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -103,8 +96,7 @@ const questoesMatematicaEnem = [
   },
   {
     pergunta: 'Qual é a solução da equação logarítmica log₂(x) = 3?',
-    titulo: 'Equação logarítmica',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+    titulo: 'Equação logarítmica', // Substitua pelo ID do tópico apropriado
     usuarioId: 1, 
     resposta:"",// Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -118,7 +110,7 @@ const questoesMatematicaEnem = [
   {
     pergunta: 'Se um carro percorre 240 km em 4 horas, qual é a velocidade média do carro?',
     titulo: 'Velocidade média',
-    topicoId: 1, // Substitua pelo ID do tópico apropriado
+   // Substitua pelo ID do tópico apropriado
     usuarioId: 1, 
     resposta:"",// Substitua pelo ID do usuário apropriado
     tipo: 'OBJETIVA',
@@ -139,6 +131,7 @@ module.exports = {
         for (const opcao of questao.opcoes) {
           await Opcao.create({ ...opcao, questao_id: questaoCriada.id });
         }
+        await questaoCriada.addTopico(1);
       }
       console.log('Seed executada com sucesso!');
     } catch (error) {

@@ -10,12 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     Topico.belongsTo(models.Area,  
       {foreignKey: 'areaId'},);
     Topico.hasMany(models.Favorito)
-    Topico.hasMany(models.Questões);
+    Topico.belongsToMany(models.Questões, { through: 'questoes_topicos', foreignKey: 'topicoId' });
+    Topico.hasMany(models.Video);
   };
 
-  Topico.associate = (models)=>{
-    Topico.hasMany(models.Video);
-}
+
 
   return Topico;
 };

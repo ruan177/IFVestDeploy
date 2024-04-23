@@ -140,5 +140,52 @@ document.addEventListener('DOMContentLoaded', function() {
         this.submit(); // Descomente esta linha para enviar o formulário após o teste
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    var editor = document.getElementById('editor');
+    var perguntaInput = document.getElementById('pergunta');
 
+
+
+    editor.addEventListener('input', function () {
+        var perguntaTexto = editor.innerHTML.trim().replace(/\s+/g, ' ');
+        perguntaInput.value = perguntaTexto;
+        console.log(perguntaInput.value)
+    });
+});
+
+function updateTopicos(Areas) {
+    // Obter o elemento select da área
+    const areaSelect = document.getElementById('areaId');
+
+    // Obter o valor selecionado da área
+    const selectedAreaId = areaSelect.value;
+
+    // Obter os tópicos correspondentes à área selecionada
+    const selectedArea = Areas.find(area => area.id === parseInt(selectedAreaId));
+    const topicos = selectedArea ? selectedArea.Topico : [];
+
+    // Obter o elemento container de tópicos
+    const topicosContainer = document.getElementById('topicosLista');
+
+    // Limpar as opções de tópicos
+    topicosContainer.innerHTML = '';
+
+    // Adicionar as opções de tópicos ao container
+    topicos.forEach(topico => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        // Ajuste o atributo name para enviar os valores como um array
+        checkbox.name = 'topicosSelecionados[]';
+        checkbox.value = topico.id; // Certifique-se de que o valor é o ID do tópico
+        checkbox.id = 'topico-' + topico.id;
+
+        const label = document.createElement('label');
+        label.htmlFor = 'topico-' + topico.id;
+        label.textContent = topico.materia;
+
+        topicosContainer.appendChild(checkbox);
+        topicosContainer.appendChild(label);
+        topicosContainer.appendChild(document.createElement('br')); // Add a line break for better readability
+    });
+}
 // Chame a função após adicionar um novo elemento

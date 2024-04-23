@@ -51,12 +51,7 @@ roteador.get('/visualizar/:tipo', async (req, res) => {
           model: Questões,
           as: 'Questões'
         },
-        {
-          model: Area,
-          as: 'Area',
-
-        },
-        {
+         {
           model: Usuario, // Inclui o modelo Usuario para acessar o perfil do usuário
           as: 'Usuario', // Ajuste conforme necessário, dependendo de como você configurou a associação
           attributes: ['perfil'], // Seleciona apenas o campo 'perfil' do usuário
@@ -135,8 +130,9 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
         },
         include: [{
           model: Topico,
-          as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
-        }]
+          as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
+          through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
+       }]
       });
     } else {
       // Se não houver um texto de pesquisa, retorna todas as questões disponíveis
@@ -148,8 +144,9 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
         },
         include: [{
           model: Topico,
-          as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
-        }]
+          as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
+          through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
+       }]
       });
     }
 
@@ -269,7 +266,7 @@ roteador.get('/:simuladoId/gabarito', async (req, res) => {
      })
  
      const questoesComOpcoesCorretas = simulado.Questões;
-
+  
    // Consulta as respostas do usuário para cada questão
    const respostasDoUsuario = await Resposta.findAll({
       where: {
@@ -284,14 +281,14 @@ roteador.get('/:simuladoId/gabarito', async (req, res) => {
       order: [['createdAt', 'DESC']], 
 
    });
-
+  
    // Prepara os dados para a view
    const dadosParaView = {
       questoes: questoesComOpcoesCorretas,
       respostasUsuario: respostasDoUsuario,
       simulado: simulado
    };
-
+  
    // Renderiza a view com os dados preparados
    res.render('prova/gabaritoProva', dadosParaView);
  
@@ -339,7 +336,7 @@ roteador.post('/responder-prova/:provaId', async (req, res) => {
   const { provaId } = req.params;
   const respostasDissertativas = respostas;
 
- //const simulado =  await Simulados.findByPk(provaId)
+ const simulado =  await Simulados.findByPk(provaId)
   try {
     if (questoes && Object.keys(questoes).length > 0) {
 
@@ -378,13 +375,15 @@ roteador.post('/responder-prova/:provaId', async (req, res) => {
         });
       }
     }
+    await new Promise(resolve => setTimeout(resolve, 10000));
+
+    if(simulado.tipo === "OBJETIVO"){
+      res.status(200).redirect(`/usuario/simulados/${simulado.id}/gabarito`)
+    }else{
+      res.redirect(`/usuario/simulados/`);
+    }
 
 
-    // if(simulado.tipo === "OBJETIVO"){
-    //   return res.redirect(`/usuario/Simulados/${provaId}/gabarito`);
-    // }
-    
-    return res.redirect(`/usuario/Simulados/${provaId}/gabarito`);
     // substituir por um redirect para a pagina do gabarito
   } catch (error) {
     console.error('Erro ao salvar respostas associadas:', error);

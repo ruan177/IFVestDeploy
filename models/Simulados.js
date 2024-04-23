@@ -29,8 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     // Associação com o modelo PerguntasProvas (um questionário tem várias perguntas)
     Simulados.belongsToMany(models.Questões, { through: 'perguntas_provas', foreignKey: 'provaId' });
-    Simulados.belongsTo(models.Area, { foreignKey: 'areaId',   onDelete: 'CASCADE',
-    onUpdate: 'CASCADE', });
+
   };
   
 

@@ -38,16 +38,7 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.fn('NOW')
       },
-      topicoId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'topicos',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
+
       usuarioId: {
         type: Sequelize.INTEGER,
         allowNull: false,

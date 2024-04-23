@@ -10,9 +10,7 @@ body{
     height: 100vh;
     margin: 0;
 }
-main{
-  
-}
+
 
 #parentEditor {
     width: 600px;
@@ -84,6 +82,9 @@ main{
     color:#3d3d3d;
     font-size: 9px;
 }  
+
+
+
 .input-resposta,
 input[type="text"],
 input[type="input"] {
@@ -108,7 +109,7 @@ select {
 
 button[type="submit"] {
     padding: 10px 20px;
-    width: 50%;
+    width: 35%;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -116,7 +117,7 @@ button[type="submit"] {
     cursor: pointer;
     font-size: 14px;
     margin-top: 10px;
-    margin-left: 9rem;
+    margin-left: 25rem;
     justify-self: center;
     border: 1px solid #272525;
 }
@@ -140,82 +141,136 @@ h1{
 }
 
 
-
-
-/* *{
-    box-sizing: border-box;
-}
-
-body{
-    background-color:#eee;
-}
-
-#parentEditor {
-    width: 600px;
-    border: 1px solid #ccc;
-    border-radius:3px;
-    padding-bottom:2px;
-    background-color:#fff;
-}
-
-#painelEditor{
-    padding:10px;
-    display:flex;
-    justify-content: space-between;
+.resposta-item {
+    display: flex;
+    /* Use flexbox for layout */
     align-items: center;
-    height:50px;
-    background-color:#f6fafe;
-}
-
-#editor {
+    /* Align items vertically in the center */
+    gap: 10px;
+    /* Add some space between the elements */
     padding: 10px;
-    height:450px;
-    overflow-y:auto;
-    overflow-x:hidden;
+    /* Add padding for better spacing */
+    border: 1px solid #ccc;
+    /* Add a border for visual separation */
+    border-radius: 5px;
+    /* Add rounded corners for a softer look */
+    margin-bottom: 10px;
+    /* Add some space between each item */
 }
 
-.btnColor{
-    font-size:15px;
-    font-weight: bold;
-    outline: none;
-    border:none;
-    cursor:pointer;
-    width:25px;
-    height:25px;
-    border-radius:20px;
-    display:flex;
-    align-items:center;
-    justify-content: center;
-}
-#fontColor{
-    color:#3c8dbc;
+.resposta-item input[type="text"] {
+    flex-grow: 1;
+    /* Allow the input field to take up available space */
+    padding: 5px;
+    /* Add padding inside the input field */
+    border: 1px solid #ccc;
+    /* Add a border for the input field */
+    border-radius: 5px;
+    /* Add rounded corners for the input field */
 }
 
-#backColor{
-    color:orange;
+.resposta-item button {
+    background-color: #007bff;
+    /* Set a background color for the button */
+    color: white;
+    /* Set the text color */
+    border: none;
+    /* Remove the default button border */
+    padding: 5px 10px;
+    /* Add padding inside the button */
+    border-radius: 5px;
+    /* Add rounded corners for the button */
+    cursor: pointer;
+    /* Change the cursor to a pointer when hovering */
+    transition: background-color 0.3s ease;
+    /* Smooth transition for hover effect */
 }
 
-#paleta{
-    width:15px;
-    height:15px;
-    border:none;
-    outline:none;
+.resposta-item button:hover {
+    background-color: #0056b3;
+    /* Darken the background color on hover */
 }
 
-.demo-icon{
-    cursor:pointer;
-    color:#3d3d3d;
+/* Estilos gerais para a lista de tópicos com checkboxes */
+
+/* Estilos para os checkboxes e labels dentro da lista de tópicos */
+.topicos-lista input[type="checkbox"] {
+    margin-right: 10px;
+    /* Ajusta o espaçamento entre o checkbox e o label */
 }
 
-.demo-icon:hover{
-    color:gray;
+.topicos-lista label {
+    cursor: pointer;
+    font-size: 16px;
+    /* Aumenta o tamanho da fonte para melhor legibilidade */
+    color: #444;
+    /* Ajusta a cor do texto para um tom mais escuro */
 }
 
-#inputFontSize{
-    border:1px solid #ccc;
-    outline:none;
-    border-radius:3px;
-    padding:2px;
-    color:#3d3d3d;
-    font-size: 9px;
-}   */
+/* Estilos para melhorar a legibilidade e a aparência geral */
+.topicos-lista label:hover {
+    color: #007bff;
+    /* Mantém a cor de hover */
+}
+
+/* Efeito de hover para os checkboxes */
+.topicos-lista input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+
+.container {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin-top: 60px;
+}
+
+.titulo {
+    width: 100%;
+    text-align: center;
+}
+
+.colunas {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.coluna-esquerda,
+.coluna-direita {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Ajuste o tamanho da coluna conforme necessário */
+.coluna-esquerda {
+    margin-right: 20px;
+}
+
+.coluna-direita {
+    margin-left: 20px;
+}
+main{
+    margin-top: 50px;
+}
+
+.icone-criar-topico {
+    display: inline-block;
+    text-decoration: underline; /* Adiciona sublinhado ao texto */
+    color:  #0056b3; /* Define a cor do texto */
+    cursor: pointer; /* Muda o cursor para indicar que é um link */
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    margin-left: 12rem;
+}
+
+.icone-criar-topico:hover {
+    color: #4d96e4; /* Muda a cor do texto ao passar o mouse */
+}
+
+.icone-criar-topico .verde {
+    color: green; /* Define a cor do "+" para verde */
+}

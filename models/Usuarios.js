@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+
+      imagemPerfil:{
+        type: DataTypes.STRING,
+        allwNull: true,
+      },
     },{
       tableName: 'usuarios'
     });

@@ -33,17 +33,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      areaId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'areas', // Certifique-se de que 'Usuarios' seja o nome correto da tabela de usuários
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      createdAt: {
+        createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')

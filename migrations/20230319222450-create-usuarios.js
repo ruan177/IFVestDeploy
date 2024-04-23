@@ -43,6 +43,11 @@ module.exports = {
         allowNull: true,
         defaultValue: 'USUARIO'
       },
+      imagemPerfil:{
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+
       createdAt:{
         type: Sequelize.DATE,
         allowNull: false,

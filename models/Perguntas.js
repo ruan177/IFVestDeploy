@@ -15,11 +15,15 @@ module.exports = (sequelize, DataTypes) => {
     });
   
     Questões.associate = (models) => {
-      Questões.belongsTo(models.Topico, { foreignKey: 'topicoId' });
+      Questões.belongsToMany(models.Topico, { through: 'questoes_topicos', foreignKey: 'questaoId' });
       Questões.belongsTo(models.Usuario, { foreignKey: 'usuarioId' });
       Questões.belongsToMany(models.Simulados, { through: 'perguntas_provas', foreignKey: 'QuestõesId' });
       Questões.hasMany(models.Opcao, { foreignKey: 'questao_id', as: 'Opcoes' });
       Questões.hasMany(models.Resposta, { foreignKey: 'questaoId', as: 'Respostas' });
+      Questões.belongsTo(models.Vestibular, {
+        foreignKey: 'vestibularId',
+        as: 'vestibular',
+       });
     };     
     return Questões;
   };

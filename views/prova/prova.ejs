@@ -25,7 +25,7 @@
 
 
     </style>
-    <
+    
 </head>
 <body>
     <%- include('../partials/sidebar') %>
@@ -48,7 +48,13 @@
                                     <div class="opcao">
                                         <label  class="letra" for="opcao<%= opcao.id %>"><%= letras[index] %>)</label>
                                         <input class="radio-input" type="radio" id="opcao<%= opcao.id %>" name="questoes[<%= questao.id %>]" value="<%= questao.id %>-<%= opcao.id %>">
-                                        <label  class="opcao-texto" for="opcao<%= opcao.id %>"><%= opcao.descricao %></label>
+                                        <% if (opcao.descricao.includes('/uploads')) { %>
+                                            <!-- Se a descrição contiver uma tag de imagem, renderiza como HTML -->
+                                            <img src="<%= opcao.descricao %>" alt="Descrição da opção <%= index + 1 %>" width="150" height="200">
+                                        <% } else { %>
+                                            <!-- Se a descrição for texto, renderiza como texto -->
+                                            <label class="opcao-texto" for="opcao<%= opcao.id %>"><%= opcao.descricao %></label>
+                                        <% } %>
                                     </div>
                                 <% }) %>
                     <% } else if (questao.tipo === "DISSERTATIVA") { %>
@@ -67,6 +73,7 @@
             </div>
         </form>
     </main>
+
     <!-- Adicione aqui os scripts JS necessários -->
     <script src="/js/main.js"></script>
     <script src="/js/prova.js"></script>

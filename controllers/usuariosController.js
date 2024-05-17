@@ -147,10 +147,10 @@ roteador.get('/criar-simulado', async (req, res) => {
 
 // Rota para lidar com o envio do formulário
 roteador.post('/criar-simulado', async (req, res) => {
-  const { titulo, descricao, areaId, tipo } = req.body;
+  const { titulo, descricao, tipo } = req.body;
   const usuarioId1 = req.session.idUsuario;
   const tipoformatado = tipo.toUpperCase()
-  if(!titulo || !descricao || !areaId || !tipo){
+  if(!titulo || !descricao || !tipo){
     throw new Error("Dados Invalidos !!! ")
   }
 
@@ -158,8 +158,7 @@ roteador.post('/criar-simulado', async (req, res) => {
     // Crie um novo questionário no banco de dados usando Sequelize
     const simulado = await Simulados.create({
       titulo,
-      descricao,
-      areaId,
+      descricao,      
       usuarioId: usuarioId1,
       tipo: tipoformatado
     });

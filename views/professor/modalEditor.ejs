@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar um tópico</title>
+    <link rel="stylesheet" href="/css/modalEditor.css" />
+    <script src="/js/modalEditor.js" defer></script>
+  </head>
+  <body>
+    <button id="open-modal" type="button" class="link-button">Não encontrou o tópico que procura? Clique aqui para criar um novo tópico</button>
+    <div id="fade" class="hide"></div>
+    <div id="modal" class="hide">
+      <div class="modal-header">
+        <h2>Criar um tópico</h2>
+        <button id="close-modal" type="button" class="buttonModal">Fechar</button>
+      </div>
+      <form action="/professor/registrar-topico" method="POST">
+      <div class="modal-body">
+        <div id="topico-container">
+            
+            <div class="topico-item">
+                
+                <input type="text" name="topicos[]" placeholder="Digite o tópico">
+
+                <button class="remove-button" type="button"
+                    onclick="removeTopico(this)">Remover
+                    Tópico</button>
+                  
+            </div>
+            
+        </div>
+        <button type="button" class="buttonModal" onclick="addTopico()">Adicionar Novo Tópico</button>
+        <button type="submit" class="buttonModal">Registrar</button>
+      </form>
+      </div>
+    </div>
+  </body>
+</html>

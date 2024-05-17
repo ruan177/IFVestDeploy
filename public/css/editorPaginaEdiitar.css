@@ -1,89 +1,121 @@
-*{
-    box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
 }
 
-body{
-    background-color:#eee;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-main{
-  
+body {
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
 }
 
-#parentEditor {
-    width: 600px;
-    border: 1px solid #ccc;
-    border-radius:3px;
-    padding-bottom:2px;
-    background-color:#fff;
+li {
+	margin-left: 16px;
 }
 
-#painelEditor{
-    padding:10px;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    height:50px;
-    background-color:#f6fafe;
+a {
+	cursor: pointer;
 }
 
-#editor {
-    padding: 10px;
-    height:450px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    border: 1px solid #272525;
-}
 
-.btnColor{
-    font-size:15px;
-    font-weight: bold;
-    outline: none;
-    border:none;
-    cursor:pointer;
-    width:25px;
-    height:25px;
-    border-radius:20px;
-    display:flex;
-    align-items:center;
-    justify-content: center;
-}
-#fontColor{
-    color:#3c8dbc;
-}
 
-#backColor{
-    color:orange;
-}
 
-#paleta{
-    width:15px;
-    height:15px;
-    border:none;
-    outline:none;
+.coluna-esqueda {
+	max-width: 991px;
+	width: 100%;
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
 }
-
-.demo-icon{
-    cursor:pointer;
-    color:#3d3d3d;
+.toolbar {
+	padding: 16px;
+	background: #eee;
 }
-
-.demo-icon:hover{
-    color:gray;
+.toolbar .head {
+	display: flex;
+	grid-gap: 10px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
 }
-
-#inputFontSize{
-    border:1px solid #ccc;
-    outline:none;
-    border-radius:3px;
-    padding:2px;
-    color:#3d3d3d;
-    font-size: 9px;
-}  
+.toolbar .head > input {
+	max-width: 100px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	border: 2px solid #ddd;
+	outline: none;
+}
+.toolbar .head select {
+	background: #fff;
+	border: 2px solid #ddd;
+	border-radius: 6px;
+	outline: none;
+	cursor: pointer;
+}
+.toolbar .head .color {
+	background: #fff;
+	border: 2px solid #ddd;
+	border-radius: 6px;
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	grid-gap: 6px;
+	padding: 0 10px;
+}
+.toolbar .head .color span {
+	font-size: 14px;
+}
+.toolbar .head .color input {
+	border: none;
+	padding: 0;
+	width: 26px;
+	height: 26px;
+	background: #fff;
+	cursor: pointer;
+}
+.toolbar .head .color input::-moz-color-swatch {
+	width: 20px;
+	height: 20px;
+	border: none;
+	border-radius: 50%;
+}
+.toolbar .btn-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	grid-gap: 10px;
+}
+.toolbar .btn-toolbar button {
+	background: #fff;
+	border: 2px solid #ddd;
+	border-radius: 6px;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+}
+.toolbar .btn-toolbar button:hover {
+	background: #f3f3f3;
+}
+#content {
+	padding: 16px;
+    background: white;
+	outline: none;
+	max-height: 50vh;
+	overflow: auto;
+}
+#show-code[data-active="true"] {
+	background: #eee;
+}
 .input-resposta,
 input[type="text"],
 input[type="input"] {
@@ -106,9 +138,9 @@ select {
     margin-bottom: 10px;
 }
 
-button[type="submit"] {
+.botao-registro{
     padding: 10px 20px;
-    width: 50%;
+    width: 35%;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -116,7 +148,7 @@ button[type="submit"] {
     cursor: pointer;
     font-size: 14px;
     margin-top: 10px;
-    margin-left: 9rem;
+    margin-left: 12rem;
     justify-self: center;
     border: 1px solid #272525;
 }
@@ -124,19 +156,123 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3;
 } 
-
+button[type="submit"],
 button[type="button"] {
     padding: 5px 5px;
     
+    
 } 
-.remove-button{
-    margin-left: 1.5rem;
-}
-h1{
-    margin-left: 7rem;
-}
-.titulo{
-    margin-left: 4rem;
+        .resposta-item {
+    display: flex;
+    /* Use flexbox for layout */
+    align-items: center;
+    /* Align items vertically in the center */
+    gap: 10px;
+    /* Add some space between the elements */
+    padding: 10px;
+    /* Add padding for better spacing */
+    border: 1px solid #ccc;
+    /* Add a border for visual separation */
+    border-radius: 5px;
+    /* Add rounded corners for a softer look */
+    margin-bottom: 10px;
+    /* Add some space between each item */
 }
 
+.resposta-item input[type="text"] {
+    flex-grow: 1;
+    /* Allow the input field to take up available space */
+    padding: 5px;
+    /* Add padding inside the input field */
+    border: 1px solid #ccc;
+    /* Add a border for the input field */
+    border-radius: 5px;
+    /* Add rounded corners for the input field */
+}
 
+.resposta-item button {
+    background-color: #007bff;
+    /* Set a background color for the button */
+    color: white;
+    /* Set the text color */
+    border: none;
+    /* Remove the default button border */
+    padding: 5px 10px;
+    /* Add padding inside the button */
+    border-radius: 5px;
+    /* Add rounded corners for the button */
+    cursor: pointer;
+    /* Change the cursor to a pointer when hovering */
+    transition: background-color 0.3s ease;
+    /* Smooth transition for hover effect */
+}
+
+.resposta-item button:hover {
+    background-color: #0056b3;
+    /* Darken the background color on hover */
+}
+
+/* Estilos gerais para a lista de tópicos com checkboxes */
+
+/* Estilos para os checkboxes e labels dentro da lista de tópicos */
+.topicos-lista input[type="checkbox"] {
+    margin-right: 10px;
+    /* Ajusta o espaçamento entre o checkbox e o label */
+}
+
+.topicos-lista label {
+    cursor: pointer;
+    font-size: 16px;
+    /* Aumenta o tamanho da fonte para melhor legibilidade */
+    color: #444;
+    /* Ajusta a cor do texto para um tom mais escuro */
+}
+
+/* Estilos para melhorar a legibilidade e a aparência geral */
+.topicos-lista label:hover {
+    color: #007bff;
+    /* Mantém a cor de hover */
+}
+
+/* Efeito de hover para os checkboxes */
+.topicos-lista input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+
+        .container {
+
+display: flex;
+flex-direction: column;
+align-items: center;
+height: 100vh;
+margin-top: 60px;
+}
+
+.titulo {
+width: 100%;
+text-align: center;
+}
+
+.colunas {
+display: flex;
+justify-content: space-between;
+width: 100%;
+}
+
+.coluna-esquerda,
+.coluna-direita {
+flex: 1;
+padding: 10px;
+}
+
+/* Ajuste o tamanho da coluna conforme necessário */
+.coluna-esquerda {
+margin-right: 20px;
+}
+
+.coluna-direita {
+margin-left: 20px;
+}
+main{
+margin-top: 50px;
+}

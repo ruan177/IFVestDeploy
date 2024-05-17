@@ -1,137 +1,136 @@
-const table      = document.querySelector(".icon-table")
-const editor     = document.querySelector("#editor")
-const paleta     = document.querySelector("#paleta")
-const fontColor  = document.querySelector("#fontColor")
-const backColor  = document.querySelector("#backColor")
-const upload     = document.querySelector("#upload")
-
-table.addEventListener("click", () => {
-    let linha = +prompt('Qual número de linhas?')
-    let coluna= +prompt('Qual número de colunas?')
-
-    if(linha && coluna)
-    {
-        let t    = document.createElement("table")
-        t.border = "1"
-        t.style.borderCollapse = "collapse"
-        t.style.border = "1px solid #ccc"
-	t.style.margin = "auto"
-
-        for( let l=0; l<linha; l++)
-        {
-            let tr   = document.createElement("tr")
-            tr.style.border = "1px solid #ccc"
-
-            for( let c=0; c<coluna; c++)
-            {
-                let td   = document.createElement("td")
-                td.style.border = "1px solid #ccc"
-                td.innerHTML = " - "
-                tr.appendChild(td)
-            }
-            t.appendChild(tr)
-        }
-        editor.appendChild(t)
-		
-		let small  = document.createElement("small")
-		small.innerHTML = "Fonte:"
-        editor.appendChild(small)
+function formatDoc(cmd, value = null) {
+    if (value) {
+        document.execCommand(cmd, false, value);
+    } else {
+        document.execCommand(cmd);
     }
-})
-
-upload.addEventListener("change", e => {
-    let file    = e.currentTarget.files[0]
-    let reader  = new FileReader()
-    let img     = new Image(100, 100)
-    reader.onloadend = () => {
-        img.src = reader.result
-        editor.appendChild(img)
-        upload.value=""
-    }
-    reader.readAsDataURL(file)
-})
-
-const rgbToHex = (r, g, b) => '#' + [r,g,b].map( x => {
-    const hex = x.toString(16)
-    return hex.length === 1 ? '0' + hex : hex   
-}).join('')
-
-fontColor.addEventListener("click", () => {
-    let color = paleta.style.backgroundColor.replace("rgb(", "").replace(")", "").split(",")
-    document.execCommand('foreColor', false, rgbToHex( parseInt(color[0]), parseInt(color[1]), parseInt(color[2]) ) )
-})
-backColor.addEventListener("click", () => document.execCommand('backColor', false, paleta.style.backgroundColor ))
-
-const link = () => document.execCommand('createlink', false, prompt('Enter a URL:', 'http://') )
-const alterFont    = size => document.execCommand("fontSize", false, parseInt(size) )
-const applyCommand = comand => document.execCommand(comand)
-function updateRespostaItems() {
-    const respostaItems = document.querySelectorAll('.resposta-item');
-    console.log(respostaItems.length); // Deve mostrar o número correto de itens
-
-    // Restante do código para manipular os itens...
 }
-document.querySelector('form').addEventListener('submit', function(event) {
-    // Obtém o conteúdo do editor de texto
-    var pergunta = document.querySelector('#editor').innerHTML;
-    
-    // Atualiza o valor do campo de entrada oculto com o conteúdo do editor de texto
-    document.querySelector('#pergunta').value = pergunta;
-});
+
+function addLink() {
+    const url = prompt('Insert url');
+    formatDoc('createLink', url);
+}
+
+
+
+
+const content = document.getElementById('content');
+
+content.addEventListener('mouseenter', function () {
+    const a = content.querySelectorAll('a');
+    a.forEach(item => {
+        item.addEventListener('mouseenter', function () {
+            content.setAttribute('contenteditable', false);
+            item.target = '_blank';
+        })
+        item.addEventListener('mouseleave', function () {
+            content.setAttribute('contenteditable', true);
+        })
+    })
+})
+
+
+const showCode = document.getElementById('show-code');
+let active = false;
+
+showCode.addEventListener('click', function () {
+    showCode.dataset.active = !active;
+    active = !active
+    if (active) {
+        content.textContent = content.innerHTML;
+        content.setAttribute('contenteditable', false);
+    } else {
+        content.innerHTML = content.textContent;
+        content.setAttribute('contenteditable', true);
+    }
+})
+
+
+
+const filename = document.getElementById('filename');
+
+function fileHandle(value) {
+    if (value === 'new') {
+        content.innerHTML = '';
+        filename.value = 'untitled';
+    } else if (value === 'txt') {
+        const blob = new Blob([content.innerText])
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${filename.value}.txt`;
+        link.click();
+    } else if (value === 'pdf') {
+        html2pdf(content).save(filename.value);
+    }
+}
+
 function addResposta() {
+
     const container = document.getElementById("respostas-container");
     const div = document.createElement("div");
     div.className = "resposta-item";
-    div.id = "resposta-item-" + new Date().getTime(); // Add a class for styling if needed
+    div.id = "resposta-item-" + new Date().getTime(); // Adiciona um ID único para cada item de resposta
+
 
     const input = document.createElement("input");
-    input.type = "text"; // This should be "text" for the input field
-    input.name = "respostas[]";
-    input.placeholder = "Sua resposta";
+    input.type = "text" // Define o tipo de input como radio
+    input.name = "respostas[]"; // Todos os botões de opção compartilham o mesmo nome
+    input.id = "inputTexto"
+    input.placeholder = "Sua resposta"
+
+    const inputFile = document.createElement("input");
+    inputFile.type = "file"; // Define o tipo de input como radio
+    inputFile.name = "files[]"; // Todos os botões de opção compartilham o mesmo nome
+    inputFile.id = "inputFile"
+    inputFile.placeholder = "Sua resposta"
+    inputFile.onchange = function() {
+        // Aqui você pode chamar a função uploadImage com o primeiro arquivo selecionado
+        previewImage(this);
+        // uploadImageRespostas(this.files[0]);
+    };
+
+    const imagePreview = document.createElement("img");
+    imagePreview.id = "imagePreview";
+    imagePreview.style.width = "200px";
+    imagePreview.style.height = "150px";
+    // Conta o número total de itens de resposta para definir o valor do botão de opção
+    const totalRespostas = container.querySelectorAll('.resposta-item').length + 1;
 
     const checkbox = document.createElement("input");
-    checkbox.type = "checkbox"; // Correctly set the type to "checkbox"
-    checkbox.name = "correta[]"; 
-    checkbox.value = true;// Optionally, you might want to give it a unique name
+    checkbox.type = "radio"; // Define o tipo de input como radio
+    checkbox.name = "correta"; // Todos os botões de opção compartilham o mesmo nome
+    checkbox.value = totalRespostas; // Define o valor do botão de opção como o índice da resposta
 
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "Remover resposta";
-    button.onclick = function() {
+    button.onclick = function () {
         div.remove();
+        // Atualiza os valores dos botões de opção após remover uma resposta
+        const respostas = container.querySelectorAll('.resposta-item');
+        respostas.forEach((resposta, index) => {
+            const checkbox = resposta.querySelector('input[type="radio"]');
+            checkbox.value = index + 1; // Ajusta o valor do botão de opção
+        });
     };
 
     div.appendChild(checkbox);
     div.appendChild(input);
+    div.appendChild(inputFile);
+    div.appendChild(imagePreview);
     div.appendChild(button);
     container.appendChild(div);
-    updateRespostaItems();
-    handleRespostaItems();
 }
 // Função para manipular os checkboxes e inputs de texto
-function handleRespostaItems() {
-    const respostaItems = document.querySelectorAll('.resposta-item');
-    const respostasSelecionadasInput = document.getElementById('respostasSelecionadas');
 
-    respostaItems.forEach((item, index) => {
-      
-        const checkbox = item.querySelector('input[type="checkbox"]');
-        const inputTexto = item.querySelector('input[type="text"]');
-        console.log(inputTexto.value)
-        // Atualize o valor do input de texto com o estado do checkbox
-        inputTexto.name = `respostas[${index}][texto]`;
-        checkbox.name = `respostas[${index}][correta]`;
-
-
-    });
-}
 
 // Chame a função no evento DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
-    handleRespostaItems();
+document.addEventListener('DOMContentLoaded', function () {
+
 
     // Função para enviar o formulário
-    document.querySelector('form').addEventListener('submit', function(event) {
+    document.querySelector('form').addEventListener('submit', function (event) {
         // Impede o envio do formulário para poder testar
 
         // Aqui você pode adicionar qualquer lógica adicional antes de enviar o formulário
@@ -140,22 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
         this.submit(); // Descomente esta linha para enviar o formulário após o teste
     });
 });
-document.addEventListener('DOMContentLoaded', function () {
-    var editor = document.getElementById('editor');
-    var perguntaInput = document.getElementById('pergunta');
 
-
-
-    editor.addEventListener('input', function () {
-        var perguntaTexto = editor.innerHTML.trim().replace(/\s+/g, ' ');
-        perguntaInput.value = perguntaTexto;
-        console.log(perguntaInput.value)
-    });
-});
 
 function updateTopicos(Areas) {
     // Obter o elemento select da área
     const areaSelect = document.getElementById('areaId');
+    const searchInput = document.getElementById('search');
 
     // Obter o valor selecionado da área
     const selectedAreaId = areaSelect.value;
@@ -172,12 +161,13 @@ function updateTopicos(Areas) {
 
     // Adicionar as opções de tópicos ao container
     topicos.forEach(topico => {
+
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         // Ajuste o atributo name para enviar os valores como um array
         checkbox.name = 'topicosSelecionados[]';
         checkbox.value = topico.id; // Certifique-se de que o valor é o ID do tópico
-        checkbox.id = 'topico-' + topico.id;
+
 
         const label = document.createElement('label');
         label.htmlFor = 'topico-' + topico.id;
@@ -189,3 +179,110 @@ function updateTopicos(Areas) {
     });
 }
 // Chame a função após adicionar um novo elemento
+
+document.getElementById('vestibularId').addEventListener('change', function () {
+    var input = document.getElementById('meuInput');
+    if (this.value === 'outro') {
+        // Mostra o campo de entrada se o usuário selecionar "Outro"
+        input.style.display = 'block';
+    } else {
+        // Esconde o campo de entrada para outras opções
+        input.style.display = 'none';
+        input.value = ''; // Limpa o valor do campo de entrada
+    }
+});
+
+
+function uploadImage(file) {
+    if (file) {
+        let formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/uploads/editor', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                let img = document.createElement('img');
+
+                img.src = data;
+                img.style.width = "200px";
+                img.style.height = "150px";
+
+                imgurl = img.outerHTML;
+                console.log(imgurl);
+                let content = document.getElementById('content');
+                let input = document.getElementById('inputTexto')
+                input.value = imgurl
+                content.innerHTML += imgurl;
+
+                localStorage.setItem('editorContent', content.innerHTML);
+
+
+            })
+            .catch(error => {
+                console.error('Erro no upload:', error);
+            });
+    }
+}
+
+function uploadImageRespostas(file) {
+    if (file) {
+        let formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/uploads/editor', {
+            method: 'POST',
+            body: formData
+        })
+           .then(response => response.json())
+           .then(data => {
+                let img = document.createElement('img');
+                img.src = data;
+                img.style.width = "200px";
+                img.style.height = "150px";
+
+                // Adiciona a URL da imagem ao array
+                let imgUrl = img.outerHTML;
+                let imgUrlsArray = JSON.parse(localStorage.getItem('imgUrls')) || []; // Transforma o valor do localStorage em um array
+                imgUrlsArray.push(imgUrl); // Adiciona a nova URL ao array
+
+                // Atualiza o localStorage com o novo array
+                localStorage.setItem('imgUrls', JSON.stringify(imgUrlsArray));
+
+                // Se necessário, você pode processar o array imgUrlsArray aqui
+            })
+           .catch(error => {
+                console.error('Erro no upload:', error);
+            });
+    }
+}
+
+//Modal Topicos - Array de tópicos
+function addTopico() {
+    const container = document.getElementById("topico-container");
+    const div = document.createElement("div");
+    div.className = "topico-item";
+    div.id = "topico-item-" + new Date().getTime(); // Add a class for styling if needed
+
+    const input = document.createElement("input");
+    input.type = "text"; // This should be "text" for the input field
+    input.name = "topicos[]";
+    input.placeholder = "Digite o tópico";
+
+
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Remover topico";
+    button.onclick = function () {
+        div.remove();
+    };
+
+    div.appendChild(input);
+    div.appendChild(button);
+    container.appendChild(div);
+
+}
+

@@ -10,17 +10,18 @@ module.exports = {
       nome: 'guilherme',
       usuario: 'guilherme85',
       email: 'email@exemplo.com',
-      senha: '123', // Senha em texto simples
+      senha: '123', 
+      perfil: 'PROFESSOR',// Senha em texto simples
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
-    // Criptografando a senha com bcrypt
+    // Criptografando 
     const hashedPassword = await bcrypt.hash(usuario.senha, saltRounds);
 
     // Inserindo o usuário no banco de dados com a senha criptografada
     await queryInterface.sequelize.query(
-      `INSERT INTO "usuarios" ("nome","usuario", "email", "senha", "createdAt", "updatedAt") VALUES ('${usuario.nome}','${usuario.usuario}','${usuario.email}', '${hashedPassword}', NOW(), NOW())`
+      `INSERT INTO "usuarios" ("nome","usuario", "email", "senha","perfil", "createdAt", "updatedAt") VALUES ('${usuario.nome}','${usuario.usuario}','${usuario.email}', '${hashedPassword}', '${usuario.perfil}', NOW(), NOW())`
     );
  },
 

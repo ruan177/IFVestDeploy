@@ -81,6 +81,9 @@
                     <tr>
                         <td><%= simulado.titulo %></td>
                         <td>
+                            <a href="/usuario/simulados/<%= simulado.id %>/fazer" class="simulado-icon">
+                                <i class="fas fa-play"></i> Fazer Simulado
+                            </a>
                             <a href="/usuario/simulados/<%= simulado.id %>/editar" class="edit-icon">
                                 <i class="fas fa-edit"></i> editar
                             </a>
@@ -88,6 +91,7 @@
                             <a href="/usuario/simulados/<%= simulado.id %>/adicionar-questoes" class="add-questions-icon">
                                 <i class="fas fa-plus"></i> Adicionar Questões
                             </a>
+                        
                         </td>
                     </tr>
                 <% }); %>

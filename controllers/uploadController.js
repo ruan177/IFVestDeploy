@@ -21,4 +21,15 @@ roteador.post('/', upload.single('image'), async (req, res) => {
     return res.status(200).redirect(`/usuario/perfil`);
 });
 
+roteador.post('/editor', upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('Nenhum arquivo enviado.');
+    }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    return res.status(200).send(JSON.stringify(imageUrl));
+});
+
+
 module.exports = roteador;

@@ -9,30 +9,234 @@
 
         <!--========== CSS ==========-->
         <link rel="stylesheet" href="/css/styles.css">
+    
+            <style>
+                * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                background-color: #f5f5f5;
+            }
+            
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            /* Estilos do cabeçalho */
+            header {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+            }
+            
+            /* Estilos da barra lateral */
+            .sidebar {
+                width: 250px;
+                background-color: #444;
+                color: #fff;
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100%;
+                overflow-y: auto;
+            }
+            
+            .sidebar h2 {
+                padding: 10px;
+            }
+            
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            
+            .sidebar li {
+                padding: 10px;
+                border-bottom: 1px solid #666;
+            }
+            
+            /* Estilos do conteúdo principal */
+            .main-content {
+                margin: 0 auto; /* Centraliza o conteúdo principal */
+                max-width: 800px; /* Define a largura máxima do conteúdo */
+                padding: 20px;
+            }
+            
+            .main-content h1 {
+                margin-bottom: 20px;
+            }
+            
+            /* Estilos da tabela */
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            
+            table th,
+            table td {
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+            
+            /* Estilos da paginação */
+            .pagination-container {
+                margin-top: 20px;
+                text-align: center; /* Centraliza a paginação */
+            }
+            
+            .pagination-container a {
+                display: inline-block;
+                padding: 8px 16px;
+                margin-right: 5px;
+                background-color: #ccc;
+                color: #333;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            
+            .pagination-container a.active {
+                background-color: #333;
+                color: #fff;
+            }
+            
+            /* Estilos do formulário */
+            form {
+                margin-bottom: 20px;
+                text-align: center; /* Centraliza o formulário */
+            }
+            form select,
+            form input[type="text"],
+            form button,
+            form input[type="submit"] {
+                padding: 10px;
+                margin-right: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+            
+            form input[type="checkbox"] {
+                margin-right: 5px;
+            }
+            
+            /* Estilos do link de voltar */
+            .back-link {
+                display: block;
+                margin-top: 20px;
+                color: #333;
+                text-decoration: none;
+                border-bottom: 1px solid #333;
+                padding-bottom: 5px;
+            }
+            .botao-associar{
+                padding: 10px 20px;
+                width: 20%;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 14px;
+                margin-top: 10px;
+            
+                justify-self: center;
+                border: 1px solid #272525;
+            }
+            .botoes-container {
+        display: flex;
+        justify-content: space-between; /* Isso espaçará os botões igualmente */
+        width: 100%; /* Certifique-se de que o contêiner tenha largura suficiente */
+    }
 
+    .botao {
+        padding: 10px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #botaoEditar {
+        background-color: #007bff;
+        color: white;
+    }
+
+    #botaoSalvar {
+        background-color: #28a745;
+        color: white;
+    }
+    #botaoCancelar {
+        background-color: #c52612;
+        color: white;
+    }
+
+    /* Estilos para os campos de entrada e textarea */
+    .inputs {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    /* Estilos para o título e a descrição */
+    h1, p {
+        margin-bottom: 20px;
+    }
+            
+            /* Estilos responsivos */
+            @media screen and (max-width: 768px) {
+                .sidebar {
+                    width: 100%;
+                    position: relative;
+                    margin-bottom: 20px;
+                }
+            
+                .main-content {
+                    margin-left: 0;
+                    max-width: none; /* Remove a largura máxima no modo responsivo */
+                }
+            
+                .pagination-container {
+                    text-align: center;
+                }
+            
+                form {
+                    text-align: center;
+                }
+            }
+                        </style>
         <title>Responsive sidebar submenus</title>
     </head>
     <body>
         <%- include('../partials/sidebar') %>
         <!--========== CONTENTS ==========-->
         <main>
-            <style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: left;
-                }
-                th {
-                    background-color: #f2f2f2;
-                }
-            </style>
-            <h1><%=simulado.titulo %></h1>
-       
-            <td><%= simulado.descricao %></td>
+           
+                <label>Titulo: </label>
+                <h1 id="tituloVisualizacao"><%= simulado.titulo %></h1>
+                <input type="text" name="titulo" id="tituloEdicao"class="inputs" value="<%= simulado.titulo %>" style="display: none;">
+                <label>Descricao: </label>
+                <p id="descricaoVisualizacao"><%= simulado.descricao %></p>
+                              <textarea id="descricaoEdicao" name="descricao" class="inputs" style="display: none;" rows="5" cols="50"><%= simulado.descricao %></textarea>
+                <div class="botoes-container">
+                    <button id="botaoEditar" class="botao" >Editar</button>
+                    <button id="botaoCancelar" class="botao" style="display: none;">Cancelar</button>
+                    <button id="botaoSalvar" class="botao" style="display: none;" onclick="enviarFormulario()" data-id="<%= simulado.id %>">Salvar</button>
+                </div>
+          
+
 
             <h1>Remover Questões</h1>
 
@@ -48,7 +252,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% simulado.Questões.forEach(questao => { %>
+                        <% questoes.forEach(questao => { %>
                             <tr>
                                 <td>
                                     <input type="checkbox" id="questao-<%= questao.id %>" name="questoesSelecionadas" value="<%= questao.id %>">
@@ -61,7 +265,17 @@
                     </tbody>
                    
                 </table>
-
+                <div class="pagination-container">
+                    <% if (page > 1) { %>
+                        <a href="?page=<%= page - 1 %>">Anterior</a>
+                    <% } %>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <a href="?page=<%= i %>" class="<%= page === i ? 'active' : '' %>"><%= i %></a>
+                    <% } %>
+                    <% if (page < totalPages) { %>
+                        <a href="?page=<%= page + 1 %>">Próximo</a>
+                    <% } %>
+                </div>
                 <input type="hidden" name="simuladoId" value="<%= simulado.id %>">
                 <button type="submit">Remover Questões</button>
             </form>
@@ -71,6 +285,51 @@
         </main>
 
         <!--========== MAIN JS ==========-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('botaoEditar').addEventListener('click', function(event) {
+            // Previne o comportamento padrão do botão, se houver
+            event.preventDefault();
+
+            // Oculta o título e a descrição em visualização
+            document.getElementById('tituloVisualizacao').style.display = 'none';
+            document.getElementById('descricaoVisualizacao').style.display = 'none';
+
+            // Exibe os inputs para edição
+            document.getElementById('tituloEdicao').style.display = 'block';
+            document.getElementById('descricaoEdicao').style.display = 'block';
+
+            // Oculta o botão "Editar" e exibe os botões "Salvar" e "Cancelar"
+            document.getElementById('botaoEditar').style.display = 'none';
+            document.getElementById('botaoSalvar').style.display = 'block';
+            document.getElementById('botaoCancelar').style.display = 'block';
+        });
+        document.getElementById('botaoCancelar').addEventListener('click', function() {
+    document.getElementById('tituloVisualizacao').style.display = 'block';
+    document.getElementById('descricaoVisualizacao').style.display = 'block';
+    document.getElementById('tituloEdicao').style.display = 'none';
+    document.getElementById('descricaoEdicao').style.display = 'none';
+    document.getElementById('botaoEditar').style.display = 'block';
+    document.getElementById('botaoSalvar').style.display = 'none';
+    document.getElementById('botaoCancelar').style.display = 'none';
+});
+
+document.getElementById('botaoSalvar').addEventListener('click', function() {
+    // Aqui você pode adicionar a lógica para salvar as alterações no servidor
+    // Por exemplo, enviar os valores dos campos de entrada para o servidor usando AJAX
+    document.getElementById('tituloVisualizacao').style.display = 'block';
+    document.getElementById('descricaoVisualizacao').style.display = 'block';
+    document.getElementById('tituloEdicao').style.display = 'none';
+    document.getElementById('descricaoEdicao').style.display = 'none';
+    document.getElementById('botaoEditar').style.display = 'block';
+    document.getElementById('botaoSalvar').style.display = 'none';
+    document.getElementById('botaoCancelar').style.display = 'none';
+});
+    });
+
+</script>
         <script src="/js/main.js"></script>
+        <script src="/js/editarsimulado.js"></script>
     </body>
 </html>

@@ -72,85 +72,148 @@ roteador.get('/visualizar/:tipo', async (req, res) => {
 });
 
 // Rota para associar uma pergunta a um questionário (formulário)
+// Exemplo de rota com paginação
 roteador.get('/:simuladoId/editar', async (req, res) => {
   try {
-    const simuladoId = req.params.simuladoId;
-    const simulado = await Simulados.findOne({
-      where: {
-        id: simuladoId
-      },
-      include: [
-        {
-          model: Questões,
-          as: 'Questões'
-        }
-      ]
-    });
-
-    res.render('prova/editarsimulado', { simulado });
+       const simuladoId = req.params.simuladoId;
+       const page = parseInt(req.query.page) || 1; // Página atual
+       const limit = 10; // Número de itens por página
+       const offset = (page - 1) * limit;
+ 
+       // Primeiro, busque o simulado sem incluir questões
+       const simulado = await Simulados.findOne({
+           where: { id: simuladoId }, 
+           include: [
+            {
+              model: Questões,
+              as: 'Questões',  through: { attributes: [] }
+            }
+          ]
+       });
+ 
+       if (!simulado) {
+           // Trate o caso em que o simulado não é encontrado
+           return res.status(404).send('Simulado não encontrado');
+       }
+ 
+       // Verifique se simulado.Questões existe e tem itens
+       const questaoIds = simulado.Questões && simulado.Questões.length > 0 ? simulado.Questões.map(questao => questao.id) : [];
+ 
+       // Em seguida, busque as questões associadas, se necessário
+       const questoes = await Questões.findAll({
+           where: { id: { [Op.in]: questaoIds } },
+           include: [{
+               model: Simulados,
+               as: 'Simulados',
+               where: { id: simuladoId },
+               through: { attributes: [] }
+           }],
+           limit: limit,
+           offset: offset
+       });
+ 
+       // Calcule o número total de páginas
+       const totalQuestoes = await Questões.count({
+           where: { id: { [Op.in]: questaoIds } },
+           include: [{
+               model: Simulados,
+               as: 'Simulados',
+               where: { id: simuladoId },
+               through: { attributes: [] }
+           }]
+       });
+       const totalPages = Math.ceil(totalQuestoes / limit);
+ 
+       // Agora, o objeto simulado deve estar disponível, mesmo que não tenha questões
+       res.render('prova/editarsimulado', { simulado: simulado, questoes: questoes, page: page, totalPages: totalPages });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Erro ao carregar formulário de associação de pergunta');
+       console.error('Erro ao carregar o formulário de edição do simulado:', error);
+       res.status(500).send('Erro ao carregar o formulário de edição do simulado.');
+  }
+ });
+ roteador.put('/:simuladoId/editar', async (req, res) => {
+  try {
+      const { simuladoId } = req.params; // Corrigindo a desestruturação para usar simuladoId
+      const { titulo, descricao } = req.body; // Corrigindo a desestruturação para usar titulo e descricao
+
+      const [updated] = await Simulados.update({
+          titulo: titulo,
+          descricao: descricao
+      }, {
+          where: { id: simuladoId } // Usando simuladoId para buscar o simulado a ser atualizado
+      });
+
+      if (updated) {
+          const updatedSimulado = await Simulados.findOne({ where: { id: simuladoId } }); // Buscando o simulado atualizado
+          return res.status(200).json(updatedSimulado);
+      }
+
+      throw new Error('Simulado não encontrado ou não atualizado');
+  } catch (error) {
+      return res.status(500).json({ error: error.message });
   }
 });
 
 roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
   try {
     const simuladoId = req.params.simuladoId;
-    const { pergunta } = req.query; // Obtem o texto de filtragem do query string
-
+    const { titulo, areaId, topicosSelecionados } = req.query; 
+    console.log(topicosSelecionados)
+     // Obtem o texto de filtragem e o ID da área do query string
+    const page = parseInt(req.query.page) || 1; // Página atual
+    const limit = 10; // Número de questões por página
+    const offset = (page - 1) * limit;
     const simulado = await Simulados.findOne({
       where: {
         id: simuladoId
       },
-      include: [
-        {
-          model: Questões,
-          as: 'Questões'
-        }
-      ]
+    })
+
+     // Buscar todos os tópicos disponíveis
+    const topicos = await Topico.findAll();
+    const Areas = await Area.findAll({
+      include: [{
+        model: Topico,
+        as: 'Topico' // Ajuste conforme necessário, dependendo de como você configurou a associação
+      }]
     });
+    // Consulta todas as questões
+    const todasQuestoes = await Questões.findAll({
+      include: [{
+        model: Topico,
+        as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
+        through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
+      }]}
+    );
 
-    // Obtém os IDs das questões já associadas ao simulado
-    const questoesAssociadasIds = simulado.Questões.map(questao => questao.id);
-
-    console.log(questoesAssociadasIds)
-
-    let questoes;
-    if (pergunta) {
-      // Se houver um texto de pesquisa, filtra as questões que contêm o texto de filtragem
-      questoes = await Questões.findAll({
-        where: {
-          id: {
-            [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
-          },
-          pergunta: {
-            [Op.like]: '%' + pergunta + '%' // Filtra questões que contêm o texto de filtragem
-          }
-        },
-        include: [{
-          model: Topico,
-          as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
-          through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
-       }]
-      });
-    } else {
-      // Se não houver um texto de pesquisa, retorna todas as questões disponíveis
-      questoes = await Questões.findAll({
-        where: {
-          id: {
-            [Op.notIn]: questoesAssociadasIds // Exclui as questões já associadas
-          }
-        },
-        include: [{
-          model: Topico,
-          as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
-          through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
-       }]
-      });
+    // Filtrar questões usando JavaScript
+    let questoesFiltradas = todasQuestoes;
+    if (titulo) {
+      questoesFiltradas = questoesFiltradas.filter(questao => questao.titulo.toLowerCase().includes(titulo.toLowerCase()));
     }
+    if (areaId && areaId!== "" ) {
+      questoesFiltradas = questoesFiltradas.filter(questao => questao.areaId === Number(areaId));
+    }
+    if(topicosSelecionados && topicosSelecionados!== ""){
+      // Conversão de topicosSelecionados para Array de IDs
+      // Se for um array, ele é usado diretamente
+      // ele é dividido em um array de strings usando .split(','). Em seguida, cada string é convertida em um número (ID) usando .map(id => parseInt(id)). O resultado é um array de IDs de tópicos.
+      const topicosIds = Array.isArray(topicosSelecionados)? topicosSelecionados : topicosSelecionados.split(',').map(id => parseInt(id));
+      questoesFiltradas = questoesFiltradas.filter(questao => {
+          // Garante que questao.topicos seja um array
+          const topicos = Array.isArray(questao.Topicos)? questao.Topicos : [];
+          return topicos.some(topico => topicosIds.includes(topico.id));
+      });
+  }
 
-    res.render('prova/associarperguntasimulado', { simulado, questoes });
+
+    // Paginação após o filtro
+    const questoes = questoesFiltradas.slice(offset, offset + limit);
+
+    const totalQuestoes = questoesFiltradas.length;
+    const totalPages = Math.ceil(totalQuestoes / limit);
+
+    res.render('prova/associarperguntasimulado', { simulado, questoes, page, totalPages, Areas, topicos });
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao carregar formulário de associação de pergunta');
@@ -189,6 +252,25 @@ roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
   }
 });
 
+roteador.patch('/:simuladoId/editar', async (req, res) => {
+  try {
+    const {titulo, descricao} = req.body;
+    const { simuladoId } = req.params;
+
+
+    // Primeiro, verifique se o simulado existe
+    const simulado = await Simulados.findOne({
+      where: {
+        id: simuladoId
+      },});
+
+
+    res.redirect(`/usuario/simulados/`);
+  } catch (error) {
+    console.error('Erro ao remover Questões do questionário:', error);
+    res.status(500).send('Erro ao remover Questões do questionário.');
+  }
+});
 roteador.delete('/:simuladoId/remover-questoes', async (req, res) => {
   try {
     const { simuladoId } = req.params;

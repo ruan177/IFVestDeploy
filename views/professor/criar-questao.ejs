@@ -1,169 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-	<!--========== BOX ICONS ==========-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
-	<!--========== CSS ==========-->
-
-
-	<title>Responsive sidebar submenus</title>
-
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<link rel="stylesheet" href="/css/editor.css">
-	<link rel="stylesheet" href="/css/styles.css">
-	<link rel="stylesheet" href="/css/icons.css">
-
-	<!-- Enhanced CSS for .resposta-item -->
-
-
+	<style>
+		
+ }
+ 
+ 
+	 </style>
+	
+	<title>Text Editor</title>
 </head>
-
 <body>
 	<%- include('../partials/sidebar') %>
-		<main>
-			<div class="container">
-				<form action="/professor/registrar-questao/<%= tipo %>" method="POST">
-					<div class="titulo">
-						<label for="titulo">TITULO:</label>
-						<input type="text" id="titulo" name="titulo" required>
-					</div>
-					<div class="colunas">
-						<div class="coluna-esquerda">
-							<input type="file" id="upload" hidden />
-							<div id="parentEditor">
-								<%- include('../partials/painel') %>
-									<div id="editor" contenteditable="true">
-										Olá, mundo!!
-									</div>
-							</div>
-						</div>
-						<div class="coluna-direita">
-							<% if ( tipo==="objetiva" ) { %>
-								<div id="respostas-container">
-									<span> Adicione as alternativas e selecione apenas a(s) resposta(s)
-										correta(s)</span>
-									<div class="resposta-item">
-										<input type="checkbox" name="correta[]" value="true">
-										<input type="text" name="respostas[]" placeholder="Sua resposta">
+	<form action="/professor/registrar-questao/<%= tipo %>" method="POST">
+		<div class="titulo">
+			<label for="titulo">TITULO DA QUESTÃO:</label>
+			<input class="input" type="text" id="titulo" name="titulo" required>
+		</div>
+	<div class="container">
+		<%- include('../partials/painel') %>
+		<div id="content" contenteditable="true" spellcheck="false">
+			Olá, mundo!!
+		</div>
+	</div>
+	
+	<div class="coluna-direita">
+		<% if ( tipo==="objetiva" ) { %>
+			<div id="respostas-container">
+				<span> Adicione as alternativas e selecione apenas a(s) resposta(s)
+					correta(s)</span>
+				<div class="resposta-item">
+					<input type="checkbox" name="correta[]" value="true">
+					<input type="text" name="respostas[]" placeholder="Sua resposta">
 
-										<button class="remove-button" type="button"
-											onclick="removeResposta(this)">Remover
-											resposta</button>
-									</div>
-								</div>
-								<button type="button" onclick="addResposta()">Adicionar resposta</button>
-
-								<% } else { %>
-									<label for="descricao">Resposta :</label>
-									<textarea id="descricao" name="resposta" rows="5" cols="50" required> </textarea>
-									<% } %>
-										<input type="hidden" id="respostasSelecionadas" name="respostasSelecionadas">
-										<div >
-											<input type="hidden" id="pergunta" name="pergunta">
-
-											<div>
-												<label for="areaId">Selecione uma área:</label>
-												<select name="areaId" id="areaId"
-													onchange="updateTopicos(<%= JSON.stringify(Areas) %>)">
-													<% Areas.forEach(area=> { %>
-														<option value="<%= area.id %>">
-															<%= area.area %>
-														</option>
-														<% }); %>
-												</select>
-											</div>
-											<div>
-												<label for="topicosLista">Selecione os tópicos:</label>
-												<div id="topicosLista" class="topicos-lista"  style=" margin-left: 10.5rem;">
-													<!-- Os checkboxes de tópicos serão adicionados dinamicamente aqui -->
-												</div>
-												<input type="hidden" id="topicosSelecionados" name="topicosSelecionados">
-											</div>
-											<div>
-												<a href="#" id="criarTopicoIcone" class="icone-criar-topico">
-													<span class="verde">+</span>Não encontrou os tópicos? Clique para criar
-												</a>
-											</div>
-								
-											
-										</div>
-										<div >
-											<label for="simuladoId">Selecione Vestibular (Opcional):</label>
-											<select id="vestibularId" name="vestibularId">
-												<option value="">Selecione uma opção</option>
-															<% Vestibulares.forEach(vestibular=> { %>
-														<option value="<%= vestibular.id %>">
-															<%= vestibular.nome %>, <%= vestibular.ano %>
-														</option>
-														<% }); %>
-												<option value="outro">Adicionar Vestibular</option>
-											</select>
-											<input type="text" id="meuInput" name="novoVestibular"style="display: none;">
-
-										</div>
-										<div>
-											<label for="simuladoId">Selecione o ano (Opcional):</label>
-											<input type="number" min="1990" max="2024"name="anoVestibular"  step="1" value="2023" />
-										</div>
-										
-
-										
-						</div>
-					</div>
-					<button type="submit">Registrar</button>
-				</form>
+					<button class="remove-button" type="button"
+						onclick="removeResposta(this)">Remover
+						resposta</button>
+				</div>
 			</div>
+			<button type="button" onclick="addResposta()">Adicionar resposta</button>
 
+			<% } else { %>
+				<label for="descricao">Resposta :</label>
+				<textarea id="descricao" name="resposta" rows="5" cols="50" required> </textarea>
+				<% } %>
+					<input type="hidden" id="respostasSelecionadas" name="respostasSelecionadas">
+					<div >
+						<input type="hidden" id="pergunta" name="pergunta">
 
+						<div>
+							<label for="areaId">Selecione uma área:</label>
+							<select name="areaId" id="areaId"
+								onchange="addItemsToDropdown(<%= JSON.stringify(Areas) %>)">
+								<option value="">Selecione uma opção</option>
+								<% Areas.forEach(area=> { %>
+									<option value="<%= area.id %>">
+										<%= area.area %>
+									</option>
+									<% }); %>
+							</select>
+						</div>
+						<div class="dropdown">
+							<input type="text" id="search" placeholder="Pesquisar...">
+						<ul id="dropdown-list">
+						 
+						   <!-- Adicione mais itens conforme necessário -->
+						</ul>
+					   </div>
+					   <input type="hidden" id="topicosSelecionados" name="topicosSelecionados">
+					
+					<div>
+						<label for="simuladoId">Selecione Vestibular (Opcional):</label>
+						<select id="vestibularId" name="vestibularId">
+							<option value="">Selecione uma opção</option>
+										<% Vestibulares.forEach(vestibular=> { %>
+									<option value="<%= vestibular.id %>">
+										<%= vestibular.nome %>, <%= vestibular.ano %>
+									</option>
+									<% }); %>
+							<option value="outro">Adicionar Vestibular</option>
+						</select>
+						<input type="text" id="meuInput" name="novoVestibular"style="display: none;">
 
-
-
-
-
-<script>
-    document.getElementById('vestibularId').addEventListener('change', function() {
-        var input = document.getElementById('meuInput');
-        if (this.value === 'outro') {
-            // Mostra o campo de entrada se o usuário selecionar "Outro"
-            input.style.display = 'block';
-        } else {
-            // Esconde o campo de entrada para outras opções
-            input.style.display = 'none';
-            input.value = ''; // Limpa o valor do campo de entrada
-        }
-    });
-</script>
-<script>
-	document.getElementById('questaoForm').addEventListener('submit', function(event) {
-		// Prevenir o envio padrão do formulário
-		event.preventDefault();
+					</div>
+					<div>
+						<label for="simuladoId">Selecione o ano (Opcional):</label>
+						<input type="number" min="1990" max="2024"name="anoVestibular"  step="1" value="2023" />
+					</div>
+					
+				</div>
+				
+	</div>
 	
-		// Coletar os IDs dos tópicos selecionados
-		const topicosSelecionados = [];
-		const checkboxes = document.querySelectorAll('#topicosLista input[type="checkbox"]:checked');
-		checkboxes.forEach(checkbox => {
-			topicosSelecionados.push(checkbox.value);
-		});
+	<button type="submit">Registrar</button>
+		</form>
+
+		<script src="/js/dropdown.js"></script>
 	
-		// Atualizar o campo oculto com os IDs dos tópicos selecionados
-		document.getElementById('topicosSelecionados').value = topicosSelecionados;
-	
-		// Enviar o formulário
-		this.submit();
-	});
-	</script>
-
-
-
-			<!--========== MAIN JS ==========-->
-			<script src="/js/main.js"></script>
-			<script src="/js/editor.js"></script>
-			<script src="/js/jscolor.min.js"></script>
-		</main>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="/js/editor.js"></script>
+	<script src="/js/main.js"></script>
 </body>
-
 </html>

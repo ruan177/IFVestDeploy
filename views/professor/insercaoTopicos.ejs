@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Escolhas multiplas</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <link rel='stylesheet' type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=REM&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/insercaoTopicos.css">
+
+</head>
+<body>
+    <div class="container">
+        <label for="topicosLista">Selecione os tópicos:</label>
+        <div class="custom-select">
+            <div class="select-box">
+                <input type="text" class="tags_input" name="tags" hidden/>
+                <div class="selected-options">
+
+                </div>
+                <div class="arrow">
+                    <i class="fa fa-angle-down"></i>
+                </div>
+            </div>
+            <div class="options">
+                <div class="option-search-tags">
+                    <input type="text" class="search-tags" placeholder="Search tags..." >
+                    <button type="button" class="clear"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="option all-tags" data-value="All">Select all</div>
+
+                <div class="option active" data-value="Black">Black</div>
+                <div class="option active" data-value="Amarelo">Amarelo</div>
+                <div class="option" data-value="Vermelho">Vermelho</div>
+                <div class="option" data-value="Verde">Verde</div>
+                <div class="option" data-value="Roxo">Roxo</div>
+                <div class="option" data-value="Marrom">Marrom</div>
+                <div class="option" data-value="Branco">Branco</div>
+                <div class="option" data-value="Azul">Azul</div>
+                <div class="option" data-value="Rosa">Rosa</div>
+
+                <div class="no-result-message" style="display: none;">Sem Resultados</div>
+            </div>
+            <span class="tag_error_msg error"></span>
+        </div>
+        <input type="button" class="btn_submit" value="Submit"/>
+    </div>
+    <script src="/js/insercaoTopicos.js"></script>
+</body>
+</html>

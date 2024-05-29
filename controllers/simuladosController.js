@@ -12,16 +12,25 @@ const roteador = Router()
 const { Op } = require('sequelize');
 
 // Rota para visualizar questionários
+// simuladosController.js
 roteador.get('/', async (req, res) => {
   try {
-    const idUsuario = req.session.idUsuario
-    const simulados = await Simulados.findAll({
-      where: {
-        usuarioId: idUsuario
-      }
-    }); // Supondo que você tenha um modelo "Provas"
+    const idUsuario = req.session.idUsuario;
+    const page = parseInt(req.query.page) || 1; // Página atual
+    const limit = 10; // Número de itens por página
+    const offset = (page - 1) * limit;
 
-    res.render('simulado/meusSimulados', { simulados });
+    const allSimulados = await Simulados.findAll({
+      where: { usuarioId: idUsuario },
+      order: [['createdAt', 'DESC']] // Ordena os simulados pela data de criação
+    });
+
+    const totalPages = Math.ceil(allSimulados.length / limit);
+    const startIndex = offset;
+    const endIndex = offset + limit;
+    const simuladosPaginated = allSimulados.slice(startIndex, endIndex);
+
+    res.render('simulado/meus-simulados', { simulados: simuladosPaginated, currentPage: page, totalPages });
   } catch (error) {
     console.error(error);
     res.status(500).send('Ocorreu um erro ao recuperar os questionários.');
@@ -29,16 +38,19 @@ roteador.get('/', async (req, res) => {
 });
 
 // Rota para visualizar questionários
+// simuladosController.js
+
+// Rota para visualizar questionários
 roteador.get('/visualizar/:tipo', async (req, res) => {
   try {
     const tipo = req.params.tipo.toUpperCase();
     const tiposPermitidos = ['DISSERTATIVO', 'OBJETIVO', 'ALEATORIO'];
-
+    let simulados;
     if (!tiposPermitidos.includes(tipo)) {
       return res.status(400).send('Tipo de simulado inválido.');
     }
 
-    const simulados = await Simulados.findAll({
+    const todosSimulados = await Simulados.findAll({
       where: {
         tipo: tipo,
         '$Questões.id$': {
@@ -51,7 +63,7 @@ roteador.get('/visualizar/:tipo', async (req, res) => {
           model: Questões,
           as: 'Questões'
         },
-         {
+        {
           model: Usuario, // Inclui o modelo Usuario para acessar o perfil do usuário
           as: 'Usuario', // Ajuste conforme necessário, dependendo de como você configurou a associação
           attributes: ['perfil'], // Seleciona apenas o campo 'perfil' do usuário
@@ -61,115 +73,127 @@ roteador.get('/visualizar/:tipo', async (req, res) => {
         }
       ]
     });
-    console.log(JSON.stringify(simulados))
 
-    //  res.send(JSON.stringify(simulados))
-    res.render('simulado/simulados', { simulados });
+    // Filtra os simulados pelo título, se o parâmetro de consulta 'titulo' estiver presente
+    const tituloBusca = req.query.titulo;
+    if (tituloBusca) {
+      simulados = todosSimulados.filter(s => s.titulo.toLowerCase().includes(tituloBusca.toLowerCase()));
+    } else {
+      simulados = todosSimulados;
+    }
+
+    res.render('simulado/simulados', { simulados, tipo });
   } catch (error) {
     console.error(error);
     res.status(500).send('Ocorreu um erro ao recuperar os questionários.');
   }
 });
-
 // Rota para associar uma pergunta a um questionário (formulário)
 // Exemplo de rota com paginação
 roteador.get('/:simuladoId/editar', async (req, res) => {
   try {
-       const simuladoId = req.params.simuladoId;
-       const page = parseInt(req.query.page) || 1; // Página atual
-       const limit = 10; // Número de itens por página
-       const offset = (page - 1) * limit;
- 
-       // Primeiro, busque o simulado sem incluir questões
-       const simulado = await Simulados.findOne({
-           where: { id: simuladoId }, 
-           include: [
-            {
-              model: Questões,
-              as: 'Questões',  through: { attributes: [] }
-            }
-          ]
-       });
- 
-       if (!simulado) {
-           // Trate o caso em que o simulado não é encontrado
-           return res.status(404).send('Simulado não encontrado');
-       }
- 
-       // Verifique se simulado.Questões existe e tem itens
-       const questaoIds = simulado.Questões && simulado.Questões.length > 0 ? simulado.Questões.map(questao => questao.id) : [];
- 
-       // Em seguida, busque as questões associadas, se necessário
-       const questoes = await Questões.findAll({
-           where: { id: { [Op.in]: questaoIds } },
-           include: [{
-               model: Simulados,
-               as: 'Simulados',
-               where: { id: simuladoId },
-               through: { attributes: [] }
-           }],
-           limit: limit,
-           offset: offset
-       });
- 
-       // Calcule o número total de páginas
-       const totalQuestoes = await Questões.count({
-           where: { id: { [Op.in]: questaoIds } },
-           include: [{
-               model: Simulados,
-               as: 'Simulados',
-               where: { id: simuladoId },
-               through: { attributes: [] }
-           }]
-       });
-       const totalPages = Math.ceil(totalQuestoes / limit);
- 
-       // Agora, o objeto simulado deve estar disponível, mesmo que não tenha questões
-       res.render('prova/editarsimulado', { simulado: simulado, questoes: questoes, page: page, totalPages: totalPages });
+    const simuladoId = req.params.simuladoId;
+    const page = parseInt(req.query.page) || 1; // Página atual
+    const limit = 10; // Número de itens por página
+    const offset = (page - 1) * limit;
+
+    // Primeiro, busque o simulado sem incluir questões
+    const simulado = await Simulados.findOne({
+      where: { id: simuladoId },
+      include: [
+        {
+          model: Questões,
+          as: 'Questões', through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!simulado) {
+      // Trate o caso em que o simulado não é encontrado
+      return res.status(404).send('Simulado não encontrado');
+    }
+
+    // Verifique se simulado.Questões existe e tem itens
+    const questaoIds = simulado.Questões && simulado.Questões.length > 0 ? simulado.Questões.map(questao => questao.id) : [];
+
+    // Em seguida, busque as questões associadas, se necessário
+    const questoes = await Questões.findAll({
+      where: { id: { [Op.in]: questaoIds } },
+      include: [{
+        model: Simulados,
+        as: 'Simulados',
+        where: { id: simuladoId },
+        through: { attributes: [] }
+      }],
+      limit: limit,
+      offset: offset
+    });
+
+    // Calcule o número total de páginas
+    const totalQuestoes = await Questões.count({
+      where: { id: { [Op.in]: questaoIds } },
+      include: [{
+        model: Simulados,
+        as: 'Simulados',
+        where: { id: simuladoId },
+        through: { attributes: [] }
+      }]
+    });
+    const totalPages = Math.ceil(totalQuestoes / limit);
+
+    // Agora, o objeto simulado deve estar disponível, mesmo que não tenha questões
+    res.render('simulado/editar-simulado', { simulado: simulado, questoes: questoes, page: page, totalPages: totalPages });
   } catch (error) {
-       console.error('Erro ao carregar o formulário de edição do simulado:', error);
-       res.status(500).send('Erro ao carregar o formulário de edição do simulado.');
-  }
- });
- roteador.put('/:simuladoId/editar', async (req, res) => {
-  try {
-      const { simuladoId } = req.params; // Corrigindo a desestruturação para usar simuladoId
-      const { titulo, descricao } = req.body; // Corrigindo a desestruturação para usar titulo e descricao
-
-      const [updated] = await Simulados.update({
-          titulo: titulo,
-          descricao: descricao
-      }, {
-          where: { id: simuladoId } // Usando simuladoId para buscar o simulado a ser atualizado
-      });
-
-      if (updated) {
-          const updatedSimulado = await Simulados.findOne({ where: { id: simuladoId } }); // Buscando o simulado atualizado
-          return res.status(200).json(updatedSimulado);
-      }
-
-      throw new Error('Simulado não encontrado ou não atualizado');
-  } catch (error) {
-      return res.status(500).json({ error: error.message });
+    console.error('Erro ao carregar o formulário de edição do simulado:', error);
+    res.status(500).send('Erro ao carregar o formulário de edição do simulado.');
   }
 });
+roteador.put('/:simuladoId/editar', async (req, res) => {
+  try {
+    const { simuladoId } = req.params; // Corrigindo a desestruturação para usar simuladoId
+    const { titulo, descricao } = req.body; // Corrigindo a desestruturação para usar titulo e descricao
+
+    const [updated] = await Simulados.update({
+      titulo: titulo,
+      descricao: descricao
+    }, {
+      where: { id: simuladoId } // Usando simuladoId para buscar o simulado a ser atualizado
+    });
+
+    if (updated) {
+      const updatedSimulado = await Simulados.findOne({ where: { id: simuladoId } }); // Buscando o simulado atualizado
+      return res.status(200).json(updatedSimulado);
+    }
+
+    throw new Error('Simulado não encontrado ou não atualizado');
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+// Em algum arquivo de serviço ou controlador onde você busca as questões do simulado
 
 roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
   try {
     const simuladoId = req.params.simuladoId;
-    const { titulo, areaId, topicosSelecionados } = req.query; 
-    console.log(topicosSelecionados)
-     // Obtem o texto de filtragem e o ID da área do query string
+    const { titulo, areaId, topicosSelecionados } = req.query;
+    // Obtem o texto de filtragem e o ID da área do query string
     const page = parseInt(req.query.page) || 1; // Página atual
     const limit = 10; // Número de questões por página
     const offset = (page - 1) * limit;
     const simulado = await Simulados.findOne({
-      where: {
-        id: simuladoId
-      },
-    })
+      where: { id: simuladoId },
+      include: [{
+        model: Questões,
+        as: 'Questões'
+      }]
+    });
 
-     // Buscar todos os tópicos disponíveis
+    if (!simulado) {
+      return res.status(404).send('Simulado não encontrado.');
+    }
+
+
+    // Buscar todos os tópicos disponíveis
     const topicos = await Topico.findAll();
     const Areas = await Area.findAll({
       include: [{
@@ -179,32 +203,38 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
     });
     // Consulta todas as questões
     const todasQuestoes = await Questões.findAll({
-      include: [{
-        model: Topico,
-        as: 'Topicos', // Ajuste conforme necessário, dependendo de como você configurou a associação
-        through: { attributes: [] } // Isso exclui os atributos da tabela de junção da resposta
-      }]}
-    );
+      include: [
+        {
+          model: Topico,
+          as: 'Topicos',
+          through: { attributes: [] }, // Exclui os atributos da tabela de junção se houver
+        },
+
+      ],
+    });
+    const questoesJaAssociadas = simulado.Questões.map(q => q.id);
+
+    const questoesDisponiveis = todasQuestoes.filter(q => !questoesJaAssociadas.includes(q.id));
 
     // Filtrar questões usando JavaScript
-    let questoesFiltradas = todasQuestoes;
+    let questoesFiltradas = questoesDisponiveis;
     if (titulo) {
       questoesFiltradas = questoesFiltradas.filter(questao => questao.titulo.toLowerCase().includes(titulo.toLowerCase()));
     }
-    if (areaId && areaId!== "" ) {
+    if (areaId && areaId !== "") {
       questoesFiltradas = questoesFiltradas.filter(questao => questao.areaId === Number(areaId));
     }
-    if(topicosSelecionados && topicosSelecionados!== ""){
+    if (topicosSelecionados && topicosSelecionados !== "") {
       // Conversão de topicosSelecionados para Array de IDs
       // Se for um array, ele é usado diretamente
       // ele é dividido em um array de strings usando .split(','). Em seguida, cada string é convertida em um número (ID) usando .map(id => parseInt(id)). O resultado é um array de IDs de tópicos.
-      const topicosIds = Array.isArray(topicosSelecionados)? topicosSelecionados : topicosSelecionados.split(',').map(id => parseInt(id));
+      const topicosIds = Array.isArray(topicosSelecionados) ? topicosSelecionados : topicosSelecionados.split(',').map(id => parseInt(id));
       questoesFiltradas = questoesFiltradas.filter(questao => {
-          // Garante que questao.topicos seja um array
-          const topicos = Array.isArray(questao.Topicos)? questao.Topicos : [];
-          return topicos.some(topico => topicosIds.includes(topico.id));
+        // Garante que questao.topicos seja um array
+        const topicos = Array.isArray(questao.Topicos) ? questao.Topicos : [];
+        return topicos.some(topico => topicosIds.includes(topico.id));
       });
-  }
+    }
 
 
     // Paginação após o filtro
@@ -213,7 +243,16 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
     const totalQuestoes = questoesFiltradas.length;
     const totalPages = Math.ceil(totalQuestoes / limit);
 
-    res.render('prova/associarperguntasimulado', { simulado, questoes, page, totalPages, Areas, topicos });
+    const questoesPorArea = {};
+    simulado.Questões.forEach(q => {
+      const areaId = q.areaId;
+      if (!questoesPorArea[areaId]) {
+        questoesPorArea[areaId] = 0;
+      }
+      questoesPorArea[areaId]++;
+    });
+
+    res.render('simulado/associar-pergunta-simulado', { simulado, questoes, page, totalPages, Areas, topicos, questoesPorArea });
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao carregar formulário de associação de pergunta');
@@ -228,7 +267,10 @@ roteador.get('/:simuladoId/adicionar-questoes', async (req, res) => {
 roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
   try {
     const { simuladoId } = req.params;
-    const { questoesSelecionadas } = req.body;
+    const { selectedQuestionIds } = req.body;
+
+
+    const idsInteiros = selectedQuestionIds.split(',').map(Number);
 
     // Primeiro, verifique se o questionário e a pergunta existem
     const simulado = await Simulados.findByPk(simuladoId);
@@ -236,13 +278,13 @@ roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
     if (!simulado) {
       return res.status(404).send('Simulado não encontrado.');
     }
-    if (!questoesSelecionadas) {
+    if (!idsInteiros) {
       return res.status(404).send('Questões não selecionadas.');
     }
 
     // Agora, associe as questões ao simulado usando o método addQuestões
     // Este método deve ser definido em sua associação Sequelize entre Simulados e Questões
-    await simulado.addQuestões(questoesSelecionadas);
+    await simulado.addQuestões(idsInteiros);
 
 
     res.redirect(`/usuario/simulados/`);
@@ -254,7 +296,7 @@ roteador.post('/:simuladoId/adicionar-questoes', async (req, res) => {
 
 roteador.patch('/:simuladoId/editar', async (req, res) => {
   try {
-    const {titulo, descricao} = req.body;
+    const { titulo, descricao } = req.body;
     const { simuladoId } = req.params;
 
 
@@ -262,7 +304,8 @@ roteador.patch('/:simuladoId/editar', async (req, res) => {
     const simulado = await Simulados.findOne({
       where: {
         id: simuladoId
-      },});
+      },
+    });
 
 
     res.redirect(`/usuario/simulados/`);
@@ -333,24 +376,25 @@ roteador.get('/:simuladoId/fazer', async (req, res) => {
 
 roteador.get('/:simuladoId/gabarito', async (req, res) => {
   const userId = req.session.idUsuario;
-  const simuladoId = req.params.simuladoId; 
+  const simuladoId = req.params.simuladoId;
   try {
     const simulado = await Simulados.findByPk(simuladoId, {
       include: [{
-         model: Questões,
-         as: 'Questões',
-         include: [{
-           model: Opcao,
-           as: 'Opcoes',
-           where: { correta: true } // Inclui apenas as opções corretas
-         }, 
-         ]}],
-     })
- 
-     const questoesComOpcoesCorretas = simulado.Questões;
-  
-   // Consulta as respostas do usuário para cada questão
-   const respostasDoUsuario = await Resposta.findAll({
+        model: Questões,
+        as: 'Questões',
+        include: [{
+          model: Opcao,
+          as: 'Opcoes',
+          // Inclui apenas as opções corretas
+        },
+        ]
+      }],
+    })
+
+    const questoesComOpcoesCorretas = simulado.Questões;
+
+    // Consulta as respostas do usuário para cada questão
+    const respostasDoUsuario = await Resposta.findAll({
       where: {
         usuarioId: userId,
         questaoId: { [Op.in]: questoesComOpcoesCorretas.map(q => q.id) }
@@ -360,27 +404,27 @@ roteador.get('/:simuladoId/gabarito', async (req, res) => {
         as: 'opcao',
         required: true
       }],
-      order: [['createdAt', 'DESC']], 
-
-   });
+      order: [['createdAt', 'DESC']],
+    });
   
-   // Prepara os dados para a view
-   const dadosParaView = {
+
+    // Prepara os dados para a view
+    const dadosParaView = {
       questoes: questoesComOpcoesCorretas,
       respostasUsuario: respostasDoUsuario,
       simulado: simulado
-   };
-  
-   // Renderiza a view com os dados preparados
-   res.render('prova/gabaritoProva', dadosParaView);
- 
+    };
+    console.log("respostas:", respostasDoUsuario)
+    // Renderiza a view com os dados preparados
+    res.render('prova/gabarito', dadosParaView);
+
     //  res.render('prova/gabaritoProva', { simulado });
- 
+
   } catch (error) {
-     console.error('Erro ao buscar o gabarito da prova:', error);
-     res.status(500).send('Erro ao buscar o gabarito da prova.');
+    console.error('Erro ao buscar o gabarito da prova:', error);
+    res.status(500).send('Erro ao buscar o gabarito da prova.');
   }
- });
+});
 function formatBrazilianDate(date) {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -418,7 +462,7 @@ roteador.post('/responder-prova/:provaId', async (req, res) => {
   const { provaId } = req.params;
   const respostasDissertativas = respostas;
 
- const simulado =  await Simulados.findByPk(provaId)
+  const simulado = await Simulados.findByPk(provaId)
   try {
     if (questoes && Object.keys(questoes).length > 0) {
 
@@ -457,11 +501,11 @@ roteador.post('/responder-prova/:provaId', async (req, res) => {
         });
       }
     }
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if(simulado.tipo === "OBJETIVO"){
+    if (simulado.tipo === "OBJETIVO") {
       res.status(200).redirect(`/usuario/simulados/${simulado.id}/gabarito`)
-    }else{
+    } else {
       res.redirect(`/usuario/simulados/`);
     }
 

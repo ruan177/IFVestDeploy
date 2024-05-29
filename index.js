@@ -1,9 +1,9 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const session = require('express-session');
-const { Usuario } = require('./models');
 
-const { comentarios, usuarios, AreaProfessor, inicio, professor, uploads } = require('./controllers');
+
+const { usuarios, simulados, inicio, professor, uploads } = require('./controllers');
 
 const app = express();
 
@@ -57,6 +57,7 @@ app.use(async (req, res, next) => {
 app.use('/', inicio);
 app.use(secure_pass);
 app.use('/usuario', usuarios);
+// app.use('/simulados', simulados)
 app.use('/professor', professor);
 app.use("/uploads",  uploads) /// usuario, usuarios(lista com os usuarios)
 // app.use('/comentario', comentarios); //comentarios do usuario

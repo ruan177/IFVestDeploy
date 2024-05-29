@@ -73,6 +73,8 @@
             <thead>
                 <tr>
                     <th>Título</th>
+                    <th>Descricao</th>
+                    <th>Tipo</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -80,6 +82,8 @@
                 <% simulados.forEach(simulado => { %>
                     <tr>
                         <td><%= simulado.titulo %></td>
+                        <td><%= simulado.descricao %></td>
+                        <td><%= simulado.tipo %></td>
                         <td>
                             <a href="/usuario/simulados/<%= simulado.id %>/fazer" class="simulado-icon">
                                 <i class="fas fa-play"></i> Fazer Simulado
@@ -97,8 +101,26 @@
                 <% }); %>
             </tbody>
         </table>
-        </main>
+      
 
+<% if (totalPages > 1) { %>
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+          <li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>">Anterior</a></li>
+        <% } %>
+        <% for(let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= currentPage == i? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>">Próximo</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  <% } %>
+</main>
         <!--========== MAIN JS ==========-->
         <script src="/js/main.js"></script>
     </body>

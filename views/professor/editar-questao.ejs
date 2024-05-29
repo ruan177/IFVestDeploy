@@ -111,8 +111,15 @@
                                 <% questao.Opcoes.forEach((opcao, index)=> { %>
                                     <div class="resposta-item">
                                         <input type="checkbox" name="correta[]" value="<%= opcao.id %>">
+                                        <% if (opcao.descricao.includes('/uploads')) { %>
+                                            <!-- Se a descrição contiver uma tag de imagem, renderiza como HTML -->
+                                            <input type="file" name="files[]" id="inputFile" class="input-resposta" placeholder="Sua resposta">
+                                            <img src="<%= opcao.descricao %>" alt="Descrição da opção <%= index + 1 %>" width="150" height="200">
+                                        <% } else { %>
+
                                         <input type="text" name="opcoes[<%= opcao.id %>]" placeholder="Sua resposta"
-                                            value="<%= opcao.id %>-<%= opcao.descricao %>">
+                                            value="<%= opcao.descricao %>">
+                                            <% } %>
                                     </div>
                                     <% }); %>
                             </div>

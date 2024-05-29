@@ -54,6 +54,35 @@
                     background-color: #0056b3;
                     /* Cor de fundo do botão ao passar o mouse */
                 }
+                .pagination {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+ .pagination li {
+    display: block;
+    margin: 0 5px;
+  }
+
+ .pagination li a {
+    display: block;
+    padding: 5px 10px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+ .pagination li.active a {
+    background-color: #0056b3;
+    color: white;
+  }
+
+ .pagination li a:hover {
+    background-color: #007bff;
+  }
+
             </style>
 
 
@@ -84,7 +113,24 @@
                 </tbody>
             </table>
 
-
+<!-- Antes do fechamento do </main> -->
+<nav aria-label="Navegação">
+    <ul class="pagination">
+      <% if (page > 1) { %>
+        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+        <li class="page-item"><a class="page-link" href="?page=<%= page - 1 %>">Anterior</a></li>
+      <% } %>
+      <% for(let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= page == i? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+      <% if (page < totalPages) { %>
+        <li class="page-item"><a class="page-link" href="?page=<%= page + 1 %>">Próxima</a></li>
+        <li class="page-item"><a class="page-link" href="?page=<%= totalPages %>">Última</a></li>
+      <% } %>
+    </ul>
+  </nav>
 
 
             <a href="/usuario/inicioLogado">Voltar para home</a>

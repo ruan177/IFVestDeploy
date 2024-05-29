@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--========== BOX ICONS ==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <title>Responsive sidebar submenus</title>
+</head>
+
+<body>
+    <%- include('../partials/sidebar') %>
+        <!--========== CONTENTS ==========-->
+        <main>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                th,
+                td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                th {
+                    background-color: #f2f2f2;
+                }
+
+                .edit-btn {
+                    display: inline-block;
+                    padding: 10px 10px;
+                    background-color: #333;
+                    /* Cor de fundo do botão */
+                    color: #fff;
+                    /* Cor do texto do botão */
+                    text-decoration: none;
+                    /* Remove o sublinhado do link */
+                    border-radius: 4px;
+                    /* Arredonda os cantos do botão */
+                    transition: background-color 0.3s ease;
+                    /* Animação suave ao passar o mouse */
+                }
+
+                .edit-btn:hover {
+                    background-color: #0056b3;
+                    /* Cor de fundo do botão ao passar o mouse */
+                }
+
+                .pagination {
+                    list-style-type: none;
+                    display: flex;
+                    justify-content: center;
+                    padding: 20px 0;
+                }
+
+                .pagination li {
+                    display: block;
+                    margin: 0 5px;
+                }
+
+                .pagination li a {
+                    display: block;
+                    padding: 5px 10px;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                }
+
+                .pagination li.active a {
+                    background-color: #0056b3;
+                    color: white;
+                }
+
+                .pagination li a:hover {
+                    background-color: #007bff;
+                }
+                .hide {
+    display: none;
+}
+
+            </style>
+                 <h1>Topicos</h1>
+            <form action="/professor/topicos" method="GET">
+                <label for="titulo">Buscar:</label>
+                <input type="text" id="materia" name="materia" required>
+                <button type="submit">Buscar</button>
+            </form>
+
+       
+            <table id="topicTable">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                    <% topicos.forEach(topico => { %>
+                        <tr>
+                            <td>
+                                <span class="material-span topic-title"id="span<%= topico.id %>"><%= topico.materia %></span>
+                                <form class="hide" id="editForm<%= topico.id %>" action="/professor/editar-topico" method="POST">
+                                    <input type="text" name="materia" value="<%= topico.materia %>" >
+                                    <input type="hidden" name="id" value="<%= topico.id %>" >
+                                    <button type="submit" id="saveButton" class="btn btn-primary">Salvar</button>
+                                    <button type="button" id="cancelButton" class="btn btn-secondary" onclick="ocultarForm(<%= topico.id %>)">Cancelar</button>
+                                </form>
+                                <button class="editBtn show" data-id="<%= topico.id %>" onclick="exibirForm(<%= topico.id %>)">Editar</button>
+                               
+                            </td>
+                            
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+            <!-- Antes do fechamento do </main> -->
+            <nav aria-label="Navegação">
+                <ul class="pagination">
+                    <% if (page> 1) { %>
+                        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=<%= page - 1 %>">Anterior</a></li>
+                        <% } %>
+                            <% for(let i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= page == i? 'active' : '' %>">
+                                    <a class="page-link" href="?page=<%= i %>">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+                                    <% if (page < totalPages) { %>
+                                        <li class="page-item"><a class="page-link"
+                                                href="?page=<%= page + 1 %>">Próxima</a></li>
+                                        <li class="page-item"><a class="page-link"
+                                                href="?page=<%= totalPages %>">Última</a></li>
+                                        <% } %>
+                </ul>
+            </nav>
+            <script>
+                function exibirForm(id){
+                    // Oculta o span com o título do tópico
+                    const titleSpan = document.getElementById(`span${id}`);
+                    titleSpan.style.display = 'none';
+    
+                    // Mostra o formulário
+                    const form = document.getElementById(`editForm${id}`);
+                    form.classList.remove('hide');
+    
+                    // Oculta o botão de editar
+                    const editButton = document.querySelector(`#editForm${id} ~ button.editBtn`);
+                    editButton.style.display = 'none';
+                }
+    
+                function ocultarForm(id){
+                    // Mostra o span com o título do tópico
+                    const titleSpan = document.getElementById(`span${id}`);
+                    titleSpan.style.display = '';
+    
+                    // Oculta o formulário
+                    const form = document.getElementById(`editForm${id}`);
+                    form.classList.add('hide');
+    
+                    // Exibe o botão de editar
+                    const editButton = document.querySelector(`#editForm${id} ~ button.editBtn`);
+                    editButton.style.display = '';
+                }
+            </script>
+                
+
+            <a href="/usuario/inicioLogado">Voltar para home</a>
+            <link rel="stylesheet" href="/css/styles.css">
+        </main>
+       
+        <!--========== MAIN JS ==========-->
+        <script src="/js/main.js"></script>
+</body>
+
+</html>

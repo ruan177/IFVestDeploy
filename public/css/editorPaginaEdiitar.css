@@ -110,6 +110,7 @@ a {
 	padding: 16px;
     background: white;
 	outline: none;
+    min-height: 150px; 
 	max-height: 50vh;
 	overflow: auto;
 }

@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Topico.associate = (models) => {
+    Topico.belongsTo(models.Usuario, { foreignKey: 'usuarioId' });
     Topico.belongsTo(models.Area,  
       {foreignKey: 'areaId'},);
     Topico.hasMany(models.Favorito)

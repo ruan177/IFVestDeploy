@@ -11,14 +11,11 @@ const { PerguntasProvas } = require('../models');
 const { Resposta } = require('../models');
 const { Op, NUMBER } = require('sequelize');
 const roteador = Router()
-const {criarOuAtualizarVestibular} = require('../utils/vestibularUtil')
+const { criarOuAtualizarVestibular } = require('../utils/vestibularUtil')
 const upload = require('../midlewares/multerConfig');
 
 
 
-roteador.get('/editor', (req, res) => {
-  res.status(200).render('professor/editor');
-});
 
 
 roteador.get('/registrar-questao/:tipo', async (req, res) => {
@@ -60,71 +57,84 @@ roteador.get('/registrar-questao/:tipo', async (req, res) => {
   });
 
   // Retorna os simulados filtrados
-  res.status(200).render('professor/editor', { Areas, tipo, simulados, Vestibulares });
-  // res.status(200).render('professor/criar-questao', { Areas, tipo, simulados });
+  res.status(200).render('professor/criar-questao', { Areas, tipo, simulados, Vestibulares });
+
 });
 
 roteador.post('/registrar-questao/:tipo', upload.array('files'), async (req, res) => {
   try {
-     const { pergunta, titulo, resposta, areaId ,respostas, correta, topicosSelecionados, novoVestibular, vestibularId } = req.body;
+    const { pergunta, titulo, resposta, areaId, respostas, correta, topicosSelecionados, novoVestibular, vestibularId } = req.body;
 
-     const anoVestibular = Number(req.body.anoVestibular);
-     const tipo = req.params.tipo.toUpperCase();
-     const usuarioId = req.session.idUsuario;
- 
-     const vestibular = await criarOuAtualizarVestibular(vestibularId, novoVestibular, anoVestibular);
- 
-     // Aqui, você pode criar a questão usando newVestibularId
-     const questao = await Questões.create({
-       pergunta,
-       titulo,
-       areaId,
-       usuarioId,
-       resposta,
-       tipo,
-       vestibularId: vestibular.id, // Usa o novo ID do vestibular
-     });
- 
+    const anoVestibular = Number(req.body.anoVestibular);
+    const tipo = req.params.tipo.toUpperCase();
+    const usuarioId = req.session.idUsuario;
 
-     await questao.addTopicos(topicosSelecionados)
+    const vestibular = await criarOuAtualizarVestibular(vestibularId, novoVestibular, anoVestibular);
+
+    // Aqui, você pode criar a questão usando newVestibularId
+    const questao = await Questões.create({
+      pergunta,
+      titulo,
+      areaId,
+      usuarioId,
+      resposta,
+      tipo,
+      vestibularId: vestibular.id, // Usa o novo ID do vestibular
+    });
+
+
+    await questao.addTopicos(topicosSelecionados)
 
     if (tipo === 'OBJETIVA') {
       // Supondo que 'correta' seja o índice da resposta correta, inicializado antes do loop
       let corretaIndex = parseInt(correta, 10); // Converte 'correta' para um número
-  
+
       // Adiciona as opções apenas se o tipo do simulado for "objetivo"
       for (let i = 0; i < respostas.length; i++) {
-          const opcao = respostas[i];
-          // Compara o índice atual com o índice da resposta correta
-          let isCorreta = i + 1 === corretaIndex;
-  
-          await Opcao.create({
-              questao_id: questao.id,
-              descricao: opcao, // Supondo que cada opção tenha uma propriedade 'descricao'
-              correta: isCorreta // Marca como true se a opção atual é a correta
-          });
+        const opcao = respostas[i];
+        // Compara o índice atual com o índice da resposta correta
+        let isCorreta = i + 1 === corretaIndex;
+
+        await Opcao.create({
+          questao_id: questao.id,
+          descricao: opcao, // Supondo que cada opção tenha uma propriedade 'descricao'
+          correta: isCorreta // Marca como true se a opção atual é a correta
+        });
       }
-  }
- 
-     res.status(201).redirect('/usuario/inicioLogado');
+    }
+
+    res.status(201).redirect('/usuario/inicioLogado');
   } catch (error) {
-     console.error(error);
-     res.status(500).redirect('/usuario/inicioLogado');
+    console.error(error);
+    res.status(500).redirect('/usuario/inicioLogado');
   }
- });
+});
 
 roteador.get('/questoes', async (req, res) => {
   const usuarioId = req.session.idUsuario;
+  const limit = 10; // Número de questões por página
+  const page = parseInt(req.query.page) || 1; // Página atual, padrão é 1
+  const offset = (page - 1) * limit;
   try {
+
+    // Dentro do bloco try da rota '/questoes'
+    const questoesCount = await Questões.count({
+      where: {
+        usuarioId: usuarioId,
+      },
+    });
+
+    const totalPages = Math.ceil(questoesCount / limit);
 
     const questoes = await Questões.findAll({
       where: {
-        usuarioId: usuarioId
+        usuarioId: usuarioId,
       },
-
+      limit: limit,
+      offset: offset,
     });
 
-    res.status(200).render('professor/minhas-questoes', { questoes })
+    res.status(200).render('professor/minhas-questoes', { questoes, totalPages, page });
 
   } catch (err) {
     req.sesssion.destroy();
@@ -132,7 +142,64 @@ roteador.get('/questoes', async (req, res) => {
   };
 
 });
+roteador.get('/topicos', async (req, res) => {
+  const usuarioId = req.session.idUsuario;
+  const limit = 10; // Número de questões por página
+  const {materia} = req.query;
+  const page = parseInt(req.query.page) || 1; // Página atual, padrão é 1
+  const offset = (page - 1) * limit;
+  let topicos;
+  try {
 
+    // Dentro do bloco try da rota '/questoes'
+    const topicosCount = await Topico.count({
+      where: {
+        usuarioId: usuarioId,
+      },
+    });
+
+    const totalPages = Math.ceil(topicosCount / limit);
+
+    const topicosSemFiltro = await Topico.findAll({
+      where: {
+        usuarioId: usuarioId,
+      },
+      limit: limit,
+      offset: offset,
+    });
+
+    if(materia){
+      topicos = topicosSemFiltro.filter(topico => topico.materia.toLowerCase().includes(materia.toLowerCase()));
+      console.log(topicos)
+    } else{
+      topicos = topicosSemFiltro
+    }
+
+
+    res.status(200).render('professor/meus-topicos', { topicos, totalPages, page });
+
+  } catch (err) {
+    req.sesssion.destroy();
+    res.status(500).redirect('/usuario/inicioLogado');
+  };
+
+});
+roteador.post('/editar-topico', async (req, res) => {
+  try {
+      const { id, materia } = req.body;
+      // Encontre o tópico pelo ID
+      const topico = await Topico.findByPk(id);
+      if (!topico) {
+          return res.status(404).send('Tópico não encontrado.');
+      }
+      // Atualize o tópico com a nova matéria
+      await topico.update({ materia });
+      res.redirect('/professor/topicos');
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Erro ao atualizar o tópico.');
+  }
+});
 roteador.get('/editar-questao/:id', async (req, res) => {
   const { id } = req.params;
   const Topicos = await Topico.findAll()
@@ -257,34 +324,36 @@ roteador.get('/criar-topicos', async (req, res) => {
 
 roteador.post('/registrar-topico', async (req, res) => {
   try {
-      const { topicos, areaId } = req.body;
+    const { topicos, areaId } = req.body;
+    const usuarioId = req.session.idUsuario;
 
-      //const tipoQuestao = req.session.tipoQuestao
+    //const tipoQuestao = req.session.tipoQuestao
 
-      if (!topicos || !areaId) {
-          return res.status(400).json({ message: 'Os campos topicos e areaId são obrigatórios.' });
-      }
+    if (!topicos || !areaId || !usuarioId ) {
+      return res.status(400).json({ message: 'Os campos topicos e areaId são obrigatórios.' });
+    }
 
-      // Supondo que 'topicos' seja um array de strings representando os nomes dos tópicos
-      const novosTopicos = await Promise.all(topicos.map(topico => {
-          return Topico.create({
-              materia: topico, // Supondo que cada tópico seja uma string
-              areaId: areaId
-          });
-      }));
+    // Supondo que 'topicos' seja um array de strings representando os nomes dos tópicos
+    const novosTopicos = await Promise.all(topicos.map(topico => {
+      return Topico.create({
+        materia: topico, // Supondo que cada tópico seja uma string
+        areaId: areaId,
+        usuarioId: usuarioId
+      });
+    }));
 
-      // Enviar uma resposta de sucesso com os novos tópicos criados
-      res.redirect('/usuario/inicioLogado')
-      // if (tipoQuestao === 'OBJETIVA') {
-      //   res.redirect('/professor/registrar-questao/OBJETIVA');
-      // } else if (tipoQuestao === 'DISSERTATIVA') {
-      //   res.redirect('/professor/registrar-questao/DISSERTATIVA');
-      // } else {
-      //   res.redirect('/usuario/inicioLogado');
-      // }
+    // Enviar uma resposta de sucesso com os novos tópicos criados
+    res.redirect('/usuario/inicioLogado')
+    // if (tipoQuestao === 'OBJETIVA') {
+    //   res.redirect('/professor/registrar-questao/OBJETIVA');
+    // } else if (tipoQuestao === 'DISSERTATIVA') {
+    //   res.redirect('/professor/registrar-questao/DISSERTATIVA');
+    // } else {
+    //   res.redirect('/usuario/inicioLogado');
+    // }
   } catch (error) {
-      console.error('Error creating topics:', error);
-      res.status(500).send('Ocorreu um erro ao criar os tópicos.');
+    console.error('Error creating topics:', error);
+    res.status(500).send('Ocorreu um erro ao criar os tópicos.');
   }
 });
 

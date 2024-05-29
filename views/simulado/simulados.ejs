@@ -58,9 +58,9 @@
         <main>
 
             <h1>Selecione um simulado</h1>
-            <form action="/usuario/search" method="post">
-                <label for="searchTerm">Buscar:</label>
-                <input type="text" id="searchTerm" name="searchTerm" required>
+            <form action="/usuario/simulados/visualizar/<%= tipo %>?titulo=" method="GET">
+                <label for="titulo">Buscar:</label>
+                <input type="text" id="titulo" name="titulo" required>
                 <button type="submit">Buscar</button>
             </form>
             <table>

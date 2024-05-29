@@ -33,7 +33,7 @@ roteador.get('/inicioLogado', async (req, res) => {
     res.status(200).redirect('/usuario/login');
   } else {
 
-    res.status(200).render('usuario/inicioLogado');
+    res.status(200).render('usuario/inicio-logado');
   }
 
 });
@@ -57,7 +57,7 @@ roteador.get('/editar', async (req, res) => {
   }
 
   // Renderiza a página de edição com os dados do usuário e a sessão
-  res.render('usuario/editar', { usuario, session: req.session });
+  res.render('usuario/editar-usuario', { usuario, session: req.session });
 });
 
 //rota de alterar funciona
@@ -142,7 +142,7 @@ roteador.delete('/:id', async (req, res) => {
 // pagina para criar simulado
 roteador.get('/criar-simulado', async (req, res) => {
 
-  res.render('prova/criar-simulado' );
+  res.render('simulado/criar-simulado' );
 });
 
 // Rota para lidar com o envio do formulário

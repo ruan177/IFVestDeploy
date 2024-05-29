@@ -77,12 +77,14 @@ function addResposta() {
     input.type = "text" // Define o tipo de input como radio
     input.name = "respostas[]"; // Todos os botões de opção compartilham o mesmo nome
     input.id = "inputTexto"
+    input.classList.add('input-resposta')
     input.placeholder = "Sua resposta"
 
     const inputFile = document.createElement("input");
     inputFile.type = "file"; // Define o tipo de input como radio
     inputFile.name = "files[]"; // Todos os botões de opção compartilham o mesmo nome
     inputFile.id = "inputFile"
+    inputFile.classList.add('input-resposta')
     inputFile.placeholder = "Sua resposta"
     inputFile.onchange = function() {
         // Aqui você pode chamar a função uploadImage com o primeiro arquivo selecionado
@@ -92,8 +94,8 @@ function addResposta() {
 
     const imagePreview = document.createElement("img");
     imagePreview.id = "imagePreview";
-    imagePreview.style.width = "200px";
-    imagePreview.style.height = "150px";
+    imagePreview.style.width = "150px";
+    imagePreview.style.height = "75px";
     // Conta o número total de itens de resposta para definir o valor do botão de opção
     const totalRespostas = container.querySelectorAll('.resposta-item').length + 1;
 
@@ -227,36 +229,46 @@ function uploadImage(file) {
     }
 }
 
-function uploadImageRespostas(file) {
-    if (file) {
-        let formData = new FormData();
-        formData.append('image', file);
+function previewImage(inputElement) {
+    const reader = new FileReader();
+    const file = inputElement.files[0];
+    reader.onload = function (e) {
+        // Encontra o elemento img dentro do mesmo div que o inputElement
+        const imagePreview = inputElement.parentElement.querySelector('img');
+        if (imagePreview) {
+            // Primeiro, atualiza o src com o preview local
+            imagePreview.src = e.target.result;
 
-        fetch('/uploads/editor', {
-            method: 'POST',
-            body: formData
-        })
-           .then(response => response.json())
-           .then(data => {
-                let img = document.createElement('img');
-                img.src = data;
-                img.style.width = "200px";
-                img.style.height = "150px";
+            // Em seguida, envia a imagem para o servidor
+            let formData = new FormData();
+            formData.append('image', file);
 
-                // Adiciona a URL da imagem ao array
-                let imgUrl = img.outerHTML;
-                let imgUrlsArray = JSON.parse(localStorage.getItem('imgUrls')) || []; // Transforma o valor do localStorage em um array
-                imgUrlsArray.push(imgUrl); // Adiciona a nova URL ao array
-
-                // Atualiza o localStorage com o novo array
-                localStorage.setItem('imgUrls', JSON.stringify(imgUrlsArray));
-
-                // Se necessário, você pode processar o array imgUrlsArray aqui
+            fetch('/uploads/editor', {
+                method: 'POST',
+                body: formData
             })
-           .catch(error => {
-                console.error('Erro no upload:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    let img = document.createElement('img');
+
+                    img.src = data;
+                    img.style.width = "200px";
+                    img.style.height = "150px";
+
+                    imgurl = img.outerHTML;
+                    const textInput = inputElement.parentElement.querySelector('input[type="text"]');
+                    textInput.value = data;
+                    textInput.readOnly = true;
+                    textInput.style.display = 'none';
+                    // Se necessário, atualiza outros elementos ou lógica com a resposta do servidor
+                    console.log('Imagem enviada para o servidor:', data);
+                })
+                .catch(error => {
+                    console.error('Erro no upload:', error);
+                });
+        }
     }
+    reader.readAsDataURL(file);
 }
 
 //Modal Topicos - Array de tópicos

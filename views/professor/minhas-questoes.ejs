@@ -2,143 +2,147 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--========== BOX ICONS ==========-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <!--========== BOX ICONS ==========-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
-    <!--========== CSS ==========-->
-    <link rel="stylesheet" href="/css/styles.css">
+  <!--========== CSS ==========-->
+  <link rel="stylesheet" href="/css/styles.css">
 
-    <title>Responsive sidebar submenus</title>
+  <title>Responsive sidebar submenus</title>
 </head>
 
 <body>
-    <%- include('../partials/sidebar') %>
-        <!--========== CONTENTS ==========-->
-        <main>
-            <style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
+  <%- include('../partials/sidebar') %>
+    <!--========== CONTENTS ==========-->
+    <main>
+      <style>
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
 
-                th,
-                td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: center;
-                }
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: center;
+        }
 
-                th {
-                    background-color: #f2f2f2;
-                }
+        th {
+          background-color: #f2f2f2;
+        }
 
-                .edit-btn {
-                    display: inline-block;
-                    padding: 10px 10px;
-                    background-color: #333;
-                    /* Cor de fundo do botão */
-                    color: #fff;
-                    /* Cor do texto do botão */
-                    text-decoration: none;
-                    /* Remove o sublinhado do link */
-                    border-radius: 4px;
-                    /* Arredonda os cantos do botão */
-                    transition: background-color 0.3s ease;
-                    /* Animação suave ao passar o mouse */
-                }
+        .edit-btn {
+          display: inline-block;
+          padding: 10px 10px;
+          background-color: #333;
+          /* Cor de fundo do botão */
+          color: #fff;
+          /* Cor do texto do botão */
+          text-decoration: none;
+          /* Remove o sublinhado do link */
+          border-radius: 4px;
+          /* Arredonda os cantos do botão */
+          transition: background-color 0.3s ease;
+          /* Animação suave ao passar o mouse */
+        }
 
-                .edit-btn:hover {
-                    background-color: #0056b3;
-                    /* Cor de fundo do botão ao passar o mouse */
-                }
-                .pagination {
-    list-style-type: none;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-  }
+        .edit-btn:hover {
+          background-color: #0056b3;
+          /* Cor de fundo do botão ao passar o mouse */
+        }
 
- .pagination li {
-    display: block;
-    margin: 0 5px;
-  }
+        .pagination {
+          list-style-type: none;
+          display: flex;
+          justify-content: center;
+          padding: 20px 0;
+        }
 
- .pagination li a {
-    display: block;
-    padding: 5px 10px;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-  }
+        .pagination li {
+          display: block;
+          margin: 0 5px;
+        }
 
- .pagination li.active a {
-    background-color: #0056b3;
-    color: white;
-  }
+        .pagination li a {
+          display: block;
+          padding: 5px 10px;
+          color: #333;
+          text-decoration: none;
+          border-radius: 5px;
+        }
 
- .pagination li a:hover {
-    background-color: #007bff;
-  }
+        .pagination li.active a {
+          background-color: #0056b3;
+          color: white;
+        }
 
-            </style>
-
-
-            <h1>Questoes</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Questão</th>
-                       
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% questoes.forEach(questao=> { %>
-                        <tr>
-
-                            <td>
-                                <%= questao.titulo %>
-                            </td>
-                            <td>
-                                <%= questao.pergunta %>
-                            </td>
-                  
-                            <td><a class="edit-btn" href="/professor/editar-questao/<%= questao.id %>">Editar</a></td>
-                        </tr>
-                        <% }); %>
-                </tbody>
-            </table>
-
-<!-- Antes do fechamento do </main> -->
-<nav aria-label="Navegação">
-    <ul class="pagination">
-      <% if (page > 1) { %>
-        <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
-        <li class="page-item"><a class="page-link" href="?page=<%= page - 1 %>">Anterior</a></li>
-      <% } %>
-      <% for(let i = 1; i <= totalPages; i++) { %>
-        <li class="page-item <%= page == i? 'active' : '' %>">
-          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-        </li>
-      <% } %>
-      <% if (page < totalPages) { %>
-        <li class="page-item"><a class="page-link" href="?page=<%= page + 1 %>">Próxima</a></li>
-        <li class="page-item"><a class="page-link" href="?page=<%= totalPages %>">Última</a></li>
-      <% } %>
-    </ul>
-  </nav>
+        .pagination li a:hover {
+          background-color: #007bff;
+        }
+      </style>
 
 
-            <a href="/usuario/inicioLogado">Voltar para home</a>
-            <link rel="stylesheet" href="/css/styles.css">
-        </main>
+      <h1>Questoes</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Questão</th>
 
-        <!--========== MAIN JS ==========-->
-        <script src="/js/main.js"></script>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% questoes.forEach(questao=> { %>
+            <tr>
+
+              <td>
+                <%= questao.titulo %>
+              </td>
+              <td>
+                <%= questao.pergunta %>
+              </td>
+
+                 <td>
+                  <!--<a class="edit-btn" href="/professor/editar-questao/<%= questao.id %>">Editar</a>-->
+                  <a class="edit-btn" href="/professor/manutencao">Editar</a></td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+
+      <!-- Antes do fechamento do </main> -->
+      <nav aria-label="Navegação">
+        <ul class="pagination">
+          <% if (page> 1) { %>
+            <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+            <li class="page-item"><a class="page-link" href="?page=<%= page - 1 %>">Anterior</a></li>
+            <% } %>
+              <% for(let i=1; i <=totalPages; i++) { %>
+                <li class="page-item <%= page == i? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </li>
+                <% } %>
+                  <% if (page < totalPages) { %>
+                    <li class="page-item"><a class="page-link" href="?page=<%= page + 1 %>">Próxima</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=<%= totalPages %>">Última</a></li>
+                    <% } %>
+        </ul>
+      </nav>
+
+
+      <a href="/usuario/inicioLogado">Voltar para home</a>
+      <link rel="stylesheet" href="/css/styles.css">
+    </main>
+
+    <!--========== MAIN JS ==========-->
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

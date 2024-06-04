@@ -16,7 +16,10 @@ const upload = require('../midlewares/multerConfig');
 
 
 
+roteador.get('/manutencao', async (req, res) => {
 
+  res.status(200).render('professor/manutencao');
+});
 
 roteador.get('/registrar-questao/:tipo', async (req, res) => {
   if (!req.session.login) {

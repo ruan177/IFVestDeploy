@@ -40,6 +40,7 @@ app.use(express.json())
 //Define diretório para arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 //Define _method como parâmetro para transformar
 // de POST para PATCH ou DELETE
 app.use(methodOverride('_method'));
@@ -47,6 +48,8 @@ app.use(methodOverride('_method'));
 app.use(async (req, res, next) => {
     if (req.session.perfil) {
         res.locals.perfilUsuario = req.session.perfil;
+        res.locals.nomeUsuario = req.session.nomeUsuario;
+        res.locals.imagemPerfil = req.session.imagemPerfil;
         res.locals.nomeUsuario = req.session.nomeUsuario;
         res.locals.imagemPerfil = req.session.imagemPerfil;
     } else {

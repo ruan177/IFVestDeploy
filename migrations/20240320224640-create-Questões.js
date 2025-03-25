@@ -34,6 +34,7 @@ module.exports = {
         defaultValue: Sequelize.fn('NOW')
       },
 
+
       usuarioId: {
         type: Sequelize.INTEGER,
         allowNull: false,

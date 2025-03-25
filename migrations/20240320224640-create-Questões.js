@@ -17,9 +17,11 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      resposta: {
-        type: Sequelize.TEXT,
-        allowNull: false
+      tipo: {
+        type: Sequelize.ENUM({
+          values: ['DISSERTATIVA', 'OBJETIVA']
+        }),
+         allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -31,16 +33,7 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.fn('NOW')
       },
-      topicoId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'topicos',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
+
       usuarioId: {
         type: Sequelize.INTEGER,
         allowNull: false,

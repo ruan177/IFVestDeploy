@@ -32,10 +32,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email_secundario: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
       perfil: {
         type: Sequelize.ENUM({
           values: ['USUARIO', 'PROFESSOR', 'ADMIN']
@@ -43,6 +39,11 @@ module.exports = {
         allowNull: true,
         defaultValue: 'USUARIO'
       },
+      imagemPerfil:{
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+
       createdAt:{
         type: Sequelize.DATE,
         allowNull: false,

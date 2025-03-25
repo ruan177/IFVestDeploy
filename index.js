@@ -1,9 +1,11 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const session = require('express-session');
-const { Usuario } = require('./models');
+const bodyParser = require('body-parser');
 
-const { comentarios, usuarios, AreaProfessor, inicio, professor } = require('./controllers');
+
+
+const { usuarios, simulados, inicio, professor, uploads } = require('./routes');
 
 const app = express();
 
@@ -14,6 +16,7 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: false
 };
+app.use(bodyParser.json());
 
 app.use(session(sessionOptions));
 
@@ -21,7 +24,7 @@ const secure_pass = (req, res, next) => {
     if (req.session.login || req.path === '/login') {
         next();
     } else {
-        res.redirect('/home');
+        res.redirect('/');
     }
 }
 
@@ -36,16 +39,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 //Define diretório para arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 //Define _method como parâmetro para transformar
 // de POST para PATCH ou DELETE
 app.use(methodOverride('_method'));
 
 app.use(async (req, res, next) => {
     if (req.session.perfil) {
-
         res.locals.perfilUsuario = req.session.perfil;
-
+        res.locals.nomeUsuario = req.session.nomeUsuario;
+        res.locals.imagemPerfil = req.session.imagemPerfil;
     } else {
         console.log('ID de usuário não está definido na sessão');
     }
@@ -56,10 +59,11 @@ app.use(async (req, res, next) => {
 app.use('/', inicio);
 app.use(secure_pass);
 app.use('/usuario', usuarios);
-app.use('/professor', professor); /// usuario, usuarios(lista com os usuarios)
-// app.use('/comentario', comentarios); //comentarios do usuario
-// app.use('/prof', AreaProfessor);
+app.use('/professor', professor);
+app.use("/uploads",  uploads) 
+app.use("/simulados",  simulados) 
 
-app.listen(process.env.PORT || 80, () => {
-    console.log('Working on port 80!')
+app.listen(process.env.PORT || 3000, () => {
+    console.log('Working on port 3000!')
 });
+ module.exports = {app};

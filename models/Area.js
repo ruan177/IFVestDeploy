@@ -7,11 +7,14 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     Area.associate = (models)=>{
-      Area.hasMany(models.Simulados, {
-        foreignKey: 'areaId', // Specify the correct foreign key name here
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-     });
+      Area.hasMany(models.Topico, {
+        foreignKey: 'areaId',
+        as: 'Topico'
+    });
+    Area.hasMany(models.Questões, {
+      foreignKey: 'areaId',
+      as: 'Questoes'
+    });
   }
     return Area;
   };

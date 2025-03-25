@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
   class Resposta extends Model {
     static associate(models) {
       this.belongsTo(models.Usuario, { foreignKey: 'usuarioId', as: 'usuario' });
-      this.belongsTo(models.Simulados, { foreignKey: 'provaId', as: 'prova' });
+      this.belongsTo(models.Simulados, { foreignKey: 'simuladoId', as: 'simulado' });
+      this.belongsTo(models.Questões, { foreignKey: 'questaoId', as: 'questoes' });
+      this.belongsTo(models.Opcao, { foreignKey: 'opcaoId', as: 'opcao' }); 
     }
   }
 
@@ -19,11 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    tipo: DataTypes.ENUM({
+      values: ['DISSERTATIVA', 'OBJETIVA'],
+      allowNull: false
+    }),
     usuarioId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    provaId: {
+    simuladoId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

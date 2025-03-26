@@ -120,7 +120,7 @@ var Parchment = {
         Store: store_1.default,
     },
 };
-exports.default = Parchment;
+export async functiondefault = Parchment;
 
 
 /***/ }),
@@ -152,12 +152,12 @@ var ParchmentError = /** @class */ (function (_super) {
     }
     return ParchmentError;
 }(Error));
-exports.ParchmentError = ParchmentError;
+export async functionParchmentError = ParchmentError;
 var attributes = {};
 var classes = {};
 var tags = {};
 var types = {};
-exports.DATA_KEY = '__blot';
+export async functionDATA_KEY = '__blot';
 var Scope;
 (function (Scope) {
     Scope[Scope["TYPE"] = 3] = "TYPE";
@@ -171,7 +171,7 @@ var Scope;
     Scope[Scope["BLOCK_ATTRIBUTE"] = 9] = "BLOCK_ATTRIBUTE";
     Scope[Scope["INLINE_ATTRIBUTE"] = 5] = "INLINE_ATTRIBUTE";
     Scope[Scope["ANY"] = 15] = "ANY";
-})(Scope = exports.Scope || (exports.Scope = {}));
+})(Scope = export async functionScope || (export async functionScope = {}));
 function create(input, value) {
     var match = query(input);
     if (match == null) {
@@ -183,19 +183,19 @@ function create(input, value) {
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
     return new BlotClass(node, value);
 }
-exports.create = create;
+export async functioncreate = create;
 function find(node, bubble) {
     if (bubble === void 0) { bubble = false; }
     if (node == null)
         return null;
     // @ts-ignore
-    if (node[exports.DATA_KEY] != null)
-        return node[exports.DATA_KEY].blot;
+    if (node[export async functionDATA_KEY] != null)
+        return node[export async functionDATA_KEY].blot;
     if (bubble)
         return find(node.parentNode, bubble);
     return null;
 }
-exports.find = find;
+export async functionfind = find;
 function query(query, scope) {
     if (scope === void 0) { scope = Scope.ANY; }
     var match;
@@ -230,7 +230,7 @@ function query(query, scope) {
         return match;
     return null;
 }
-exports.query = query;
+export async functionquery = query;
 function register() {
     var Definitions = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -275,7 +275,7 @@ function register() {
     }
     return Definition;
 }
-exports.register = register;
+export async functionregister = register;
 
 
 /***/ }),
@@ -711,7 +711,7 @@ module.exports = function extend() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.BlockEmbed = exports.bubbleFormats = undefined;
+export async functiondefault = export async functionBlockEmbed = export async functionbubbleFormats = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -955,9 +955,9 @@ function bubbleFormats(blot) {
   return bubbleFormats(blot.parent, formats);
 }
 
-exports.bubbleFormats = bubbleFormats;
-exports.BlockEmbed = BlockEmbed;
-exports.default = Block;
+export async functionbubbleFormats = bubbleFormats;
+export async functionBlockEmbed = BlockEmbed;
+export async functiondefault = Block;
 
 /***/ }),
 /* 5 */
@@ -969,7 +969,7 @@ exports.default = Block;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.overload = exports.expandConfig = undefined;
+export async functiondefault = export async functionoverload = export async functionexpandConfig = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1690,9 +1690,9 @@ function shiftRange(range, index, length, source) {
   return new _selection.Range(start, end - start);
 }
 
-exports.expandConfig = expandConfig;
-exports.overload = overload;
-exports.default = Quill;
+export async functionexpandConfig = expandConfig;
+export async functionoverload = overload;
+export async functiondefault = Quill;
 
 /***/ }),
 /* 6 */
@@ -1782,7 +1782,7 @@ Inline.order = ['cursor', 'inline', // Must be lower
 'underline', 'strike', 'italic', 'bold', 'script', 'link', 'code' // Must be higher
 ];
 
-exports.default = Inline;
+export async functiondefault = Inline;
 
 /***/ }),
 /* 7 */
@@ -1819,7 +1819,7 @@ var TextBlot = function (_Parchment$Text) {
   return TextBlot;
 }(_parchment2.default.Text);
 
-exports.default = TextBlot;
+export async functiondefault = TextBlot;
 
 /***/ }),
 /* 8 */
@@ -1935,7 +1935,7 @@ Emitter.sources = {
   USER: 'user'
 };
 
-exports.default = Emitter;
+export async functiondefault = Emitter;
 
 /***/ }),
 /* 9 */
@@ -1961,7 +1961,7 @@ var Module = function Module(quill) {
 
 Module.DEFAULTS = {};
 
-exports.default = Module;
+export async functiondefault = Module;
 
 /***/ }),
 /* 10 */
@@ -1999,7 +1999,7 @@ debug.level = namespace.level = function (newLevel) {
   level = newLevel;
 };
 
-exports.default = namespace;
+export async functiondefault = namespace;
 
 /***/ }),
 /* 11 */
@@ -2161,7 +2161,7 @@ var Attributor = /** @class */ (function () {
     };
     return Attributor;
 }());
-exports.default = Attributor;
+export async functiondefault = Attributor;
 
 
 /***/ }),
@@ -2174,7 +2174,7 @@ exports.default = Attributor;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.Code = undefined;
+export async functiondefault = export async functionCode = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -2363,8 +2363,8 @@ CodeBlock.blotName = 'code-block';
 CodeBlock.tagName = 'PRE';
 CodeBlock.TAB = '  ';
 
-exports.Code = Code;
-exports.default = CodeBlock;
+export async functionCode = Code;
+export async functiondefault = CodeBlock;
 
 /***/ }),
 /* 14 */
@@ -2732,7 +2732,7 @@ function normalizeDelta(delta) {
   }, new _quillDelta2.default());
 }
 
-exports.default = Editor;
+export async functiondefault = Editor;
 
 /***/ }),
 /* 15 */
@@ -2744,7 +2744,7 @@ exports.default = Editor;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.Range = undefined;
+export async functiondefault = export async functionRange = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -3220,8 +3220,8 @@ function contains(parent, descendant) {
   return parent.contains(descendant);
 }
 
-exports.Range = Range;
-exports.default = Selection;
+export async functionRange = Range;
+export async functiondefault = Selection;
 
 /***/ }),
 /* 16 */
@@ -3291,7 +3291,7 @@ var Break = function (_Parchment$Embed) {
 Break.blotName = 'break';
 Break.tagName = 'BR';
 
-exports.default = Break;
+export async functiondefault = Break;
 
 /***/ }),
 /* 17 */
@@ -3556,7 +3556,7 @@ function makeBlot(node) {
     }
     return blot;
 }
-exports.default = ContainerBlot;
+export async functiondefault = ContainerBlot;
 
 
 /***/ }),
@@ -3638,7 +3638,7 @@ var FormatBlot = /** @class */ (function (_super) {
     };
     return FormatBlot;
 }(container_1.default));
-exports.default = FormatBlot;
+export async functiondefault = FormatBlot;
 
 
 /***/ }),
@@ -3688,7 +3688,7 @@ var LeafBlot = /** @class */ (function (_super) {
     LeafBlot.scope = Registry.Scope.INLINE_BLOT;
     return LeafBlot;
 }(shadow_1.default));
-exports.default = LeafBlot;
+export async functiondefault = LeafBlot;
 
 
 /***/ }),
@@ -4344,7 +4344,7 @@ Scroll.tagName = 'DIV';
 Scroll.defaultChild = 'block';
 Scroll.allowedChildren = [_block2.default, _block.BlockEmbed, _container2.default];
 
-exports.default = Scroll;
+export async functiondefault = Scroll;
 
 /***/ }),
 /* 23 */
@@ -4356,7 +4356,7 @@ exports.default = Scroll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SHORTKEY = exports.default = undefined;
+export async functionSHORTKEY = export async functiondefault = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -4949,8 +4949,8 @@ function normalize(binding) {
   return binding;
 }
 
-exports.default = Keyboard;
-exports.SHORTKEY = SHORTKEY;
+export async functiondefault = Keyboard;
+export async functionSHORTKEY = SHORTKEY;
 
 /***/ }),
 /* 24 */
@@ -5133,7 +5133,7 @@ Cursor.tagName = 'span';
 Cursor.CONTENTS = '\uFEFF'; // Zero width no break space
 
 
-exports.default = Cursor;
+export async functiondefault = Cursor;
 
 /***/ }),
 /* 25 */
@@ -5176,7 +5176,7 @@ var Container = function (_Parchment$Container) {
 
 Container.allowedChildren = [_block2.default, _block.BlockEmbed, Container];
 
-exports.default = Container;
+export async functiondefault = Container;
 
 /***/ }),
 /* 26 */
@@ -5188,7 +5188,7 @@ exports.default = Container;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ColorStyle = exports.ColorClass = exports.ColorAttributor = undefined;
+export async functionColorStyle = export async functionColorClass = export async functionColorAttributor = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5237,9 +5237,9 @@ var ColorStyle = new ColorAttributor('color', 'color', {
   scope: _parchment2.default.Scope.INLINE
 });
 
-exports.ColorAttributor = ColorAttributor;
-exports.ColorClass = ColorClass;
-exports.ColorStyle = ColorStyle;
+export async functionColorAttributor = ColorAttributor;
+export async functionColorClass = ColorClass;
+export async functionColorStyle = ColorStyle;
 
 /***/ }),
 /* 27 */
@@ -5251,7 +5251,7 @@ exports.ColorStyle = ColorStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sanitize = exports.default = undefined;
+export async functionsanitize = export async functiondefault = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5321,8 +5321,8 @@ function _sanitize(url, protocols) {
   return protocols.indexOf(protocol) > -1;
 }
 
-exports.default = Link;
-exports.sanitize = _sanitize;
+export async functiondefault = Link;
+export async functionsanitize = _sanitize;
 
 /***/ }),
 /* 28 */
@@ -5562,7 +5562,7 @@ var Picker = function () {
   return Picker;
 }();
 
-exports.default = Picker;
+export async functiondefault = Picker;
 
 /***/ }),
 /* 29 */
@@ -5647,7 +5647,7 @@ _quill2.default.register({
 
 _parchment2.default.register(_block2.default, _break2.default, _cursor2.default, _inline2.default, _scroll2.default, _text2.default);
 
-exports.default = _quill2.default;
+export async functiondefault = _quill2.default;
 
 /***/ }),
 /* 30 */
@@ -5809,7 +5809,7 @@ var ShadowBlot = /** @class */ (function () {
     ShadowBlot.blotName = 'abstract';
     return ShadowBlot;
 }());
-exports.default = ShadowBlot;
+export async functiondefault = ShadowBlot;
 
 
 /***/ }),
@@ -5886,7 +5886,7 @@ var AttributorStore = /** @class */ (function () {
     };
     return AttributorStore;
 }());
-exports.default = AttributorStore;
+export async functiondefault = AttributorStore;
 
 
 /***/ }),
@@ -5949,7 +5949,7 @@ var ClassAttributor = /** @class */ (function (_super) {
     };
     return ClassAttributor;
 }(attributor_1.default));
-exports.default = ClassAttributor;
+export async functiondefault = ClassAttributor;
 
 
 /***/ }),
@@ -6012,7 +6012,7 @@ var StyleAttributor = /** @class */ (function (_super) {
     };
     return StyleAttributor;
 }(attributor_1.default));
-exports.default = StyleAttributor;
+export async functiondefault = StyleAttributor;
 
 
 /***/ }),
@@ -6069,7 +6069,7 @@ Theme.themes = {
   'default': Theme
 };
 
-exports.default = Theme;
+export async functiondefault = Theme;
 
 /***/ }),
 /* 35 */
@@ -6190,7 +6190,7 @@ var Embed = function (_Parchment$Embed) {
   return Embed;
 }(_parchment2.default.Embed);
 
-exports.default = Embed;
+export async functiondefault = Embed;
 
 /***/ }),
 /* 36 */
@@ -6202,7 +6202,7 @@ exports.default = Embed;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AlignStyle = exports.AlignClass = exports.AlignAttribute = undefined;
+export async functionAlignStyle = export async functionAlignClass = export async functionAlignAttribute = undefined;
 
 var _parchment = __webpack_require__(0);
 
@@ -6219,9 +6219,9 @@ var AlignAttribute = new _parchment2.default.Attributor.Attribute('align', 'alig
 var AlignClass = new _parchment2.default.Attributor.Class('align', 'ql-align', config);
 var AlignStyle = new _parchment2.default.Attributor.Style('align', 'text-align', config);
 
-exports.AlignAttribute = AlignAttribute;
-exports.AlignClass = AlignClass;
-exports.AlignStyle = AlignStyle;
+export async functionAlignAttribute = AlignAttribute;
+export async functionAlignClass = AlignClass;
+export async functionAlignStyle = AlignStyle;
 
 /***/ }),
 /* 37 */
@@ -6233,7 +6233,7 @@ exports.AlignStyle = AlignStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BackgroundStyle = exports.BackgroundClass = undefined;
+export async functionBackgroundStyle = export async functionBackgroundClass = undefined;
 
 var _parchment = __webpack_require__(0);
 
@@ -6250,8 +6250,8 @@ var BackgroundStyle = new _color.ColorAttributor('background', 'background-color
   scope: _parchment2.default.Scope.INLINE
 });
 
-exports.BackgroundClass = BackgroundClass;
-exports.BackgroundStyle = BackgroundStyle;
+export async functionBackgroundClass = BackgroundClass;
+export async functionBackgroundStyle = BackgroundStyle;
 
 /***/ }),
 /* 38 */
@@ -6263,7 +6263,7 @@ exports.BackgroundStyle = BackgroundStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.DirectionStyle = exports.DirectionClass = exports.DirectionAttribute = undefined;
+export async functionDirectionStyle = export async functionDirectionClass = export async functionDirectionAttribute = undefined;
 
 var _parchment = __webpack_require__(0);
 
@@ -6280,9 +6280,9 @@ var DirectionAttribute = new _parchment2.default.Attributor.Attribute('direction
 var DirectionClass = new _parchment2.default.Attributor.Class('direction', 'ql-direction', config);
 var DirectionStyle = new _parchment2.default.Attributor.Style('direction', 'direction', config);
 
-exports.DirectionAttribute = DirectionAttribute;
-exports.DirectionClass = DirectionClass;
-exports.DirectionStyle = DirectionStyle;
+export async functionDirectionAttribute = DirectionAttribute;
+export async functionDirectionClass = DirectionClass;
+export async functionDirectionStyle = DirectionStyle;
 
 /***/ }),
 /* 39 */
@@ -6294,7 +6294,7 @@ exports.DirectionStyle = DirectionStyle;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FontClass = exports.FontStyle = undefined;
+export async functionFontClass = export async functionFontStyle = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6340,8 +6340,8 @@ var FontStyleAttributor = function (_Parchment$Attributor) {
 
 var FontStyle = new FontStyleAttributor('font', 'font-family', config);
 
-exports.FontStyle = FontStyle;
-exports.FontClass = FontClass;
+export async functionFontStyle = FontStyle;
+export async functionFontClass = FontClass;
 
 /***/ }),
 /* 40 */
@@ -6353,7 +6353,7 @@ exports.FontClass = FontClass;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SizeStyle = exports.SizeClass = undefined;
+export async functionSizeStyle = export async functionSizeClass = undefined;
 
 var _parchment = __webpack_require__(0);
 
@@ -6370,8 +6370,8 @@ var SizeStyle = new _parchment2.default.Attributor.Style('size', 'font-size', {
   whitelist: ['10px', '18px', '32px']
 });
 
-exports.SizeClass = SizeClass;
-exports.SizeStyle = SizeStyle;
+export async functionSizeClass = SizeClass;
+export async functionSizeStyle = SizeStyle;
 
 /***/ }),
 /* 41 */
@@ -6440,7 +6440,7 @@ module.exports = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getLastChangeIndex = exports.default = undefined;
+export async functiongetLastChangeIndex = export async functiondefault = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6595,8 +6595,8 @@ function getLastChangeIndex(delta) {
   return changeIndex;
 }
 
-exports.default = History;
-exports.getLastChangeIndex = getLastChangeIndex;
+export async functiondefault = History;
+export async functiongetLastChangeIndex = getLastChangeIndex;
 
 /***/ }),
 /* 43 */
@@ -6608,7 +6608,7 @@ exports.getLastChangeIndex = getLastChangeIndex;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.BaseTooltip = undefined;
+export async functiondefault = export async functionBaseTooltip = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -6938,8 +6938,8 @@ function fillSelect(select, values) {
   });
 }
 
-exports.BaseTooltip = BaseTooltip;
-exports.default = BaseTheme;
+export async functionBaseTooltip = BaseTooltip;
+export async functiondefault = BaseTheme;
 
 /***/ }),
 /* 44 */
@@ -7079,7 +7079,7 @@ var LinkedList = /** @class */ (function () {
     };
     return LinkedList;
 }());
-exports.default = LinkedList;
+export async functiondefault = LinkedList;
 
 
 /***/ }),
@@ -7263,7 +7263,7 @@ var ScrollBlot = /** @class */ (function (_super) {
     ScrollBlot.tagName = 'DIV';
     return ScrollBlot;
 }(container_1.default));
-exports.default = ScrollBlot;
+export async functiondefault = ScrollBlot;
 
 
 /***/ }),
@@ -7348,7 +7348,7 @@ var InlineBlot = /** @class */ (function (_super) {
     InlineBlot.tagName = 'SPAN';
     return InlineBlot;
 }(format_1.default));
-exports.default = InlineBlot;
+export async functiondefault = InlineBlot;
 
 
 /***/ }),
@@ -7424,7 +7424,7 @@ var BlockBlot = /** @class */ (function (_super) {
     BlockBlot.tagName = 'P';
     return BlockBlot;
 }(format_1.default));
-exports.default = BlockBlot;
+export async functiondefault = BlockBlot;
 
 
 /***/ }),
@@ -7472,7 +7472,7 @@ var EmbedBlot = /** @class */ (function (_super) {
     };
     return EmbedBlot;
 }(leaf_1.default));
-exports.default = EmbedBlot;
+export async functiondefault = EmbedBlot;
 
 
 /***/ }),
@@ -7575,7 +7575,7 @@ var TextBlot = /** @class */ (function (_super) {
     TextBlot.scope = Registry.Scope.INLINE_BLOT;
     return TextBlot;
 }(leaf_1.default));
-exports.default = TextBlot;
+export async functiondefault = TextBlot;
 
 
 /***/ }),
@@ -8400,7 +8400,7 @@ function merge_tuples (diffs, start, length) {
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
-exports.shim = shim;
+export async functionshim = shim;
 function shim (obj) {
   var keys = [];
   for (var key in obj) keys.push(key);
@@ -8418,12 +8418,12 @@ var supportsArgumentsClass = (function(){
 
 exports = module.exports = supportsArgumentsClass ? supported : unsupported;
 
-exports.supported = supported;
+export async functionsupported = supported;
 function supported(object) {
   return Object.prototype.toString.call(object) == '[object Arguments]';
 };
 
-exports.unsupported = unsupported;
+export async functionunsupported = unsupported;
 function unsupported(object){
   return object &&
     typeof object == 'object' &&
@@ -8761,7 +8761,7 @@ if ('undefined' !== typeof module) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.matchText = exports.matchSpacing = exports.matchNewline = exports.matchBlot = exports.matchAttributor = exports.default = undefined;
+export async functionmatchText = export async functionmatchSpacing = export async functionmatchNewline = export async functionmatchBlot = export async functionmatchAttributor = export async functiondefault = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -9168,12 +9168,12 @@ function matchText(node, delta) {
   return delta.insert(text);
 }
 
-exports.default = Clipboard;
-exports.matchAttributor = matchAttributor;
-exports.matchBlot = matchBlot;
-exports.matchNewline = matchNewline;
-exports.matchSpacing = matchSpacing;
-exports.matchText = matchText;
+export async functiondefault = Clipboard;
+export async functionmatchAttributor = matchAttributor;
+export async functionmatchBlot = matchBlot;
+export async functionmatchNewline = matchNewline;
+export async functionmatchSpacing = matchSpacing;
+export async functionmatchText = matchText;
 
 /***/ }),
 /* 56 */
@@ -9237,7 +9237,7 @@ var Bold = function (_Inline) {
 Bold.blotName = 'bold';
 Bold.tagName = ['STRONG', 'B'];
 
-exports.default = Bold;
+export async functiondefault = Bold;
 
 /***/ }),
 /* 57 */
@@ -9249,7 +9249,7 @@ exports.default = Bold;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addControls = exports.default = undefined;
+export async functionaddControls = export async functiondefault = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -9561,8 +9561,8 @@ Toolbar.DEFAULTS = {
   }
 };
 
-exports.default = Toolbar;
-exports.addControls = addControls;
+export async functiondefault = Toolbar;
+export async functionaddControls = addControls;
 
 /***/ }),
 /* 58 */
@@ -9639,7 +9639,7 @@ var ColorPicker = function (_Picker) {
   return ColorPicker;
 }(_picker2.default);
 
-exports.default = ColorPicker;
+export async functiondefault = ColorPicker;
 
 /***/ }),
 /* 60 */
@@ -9697,7 +9697,7 @@ var IconPicker = function (_Picker) {
   return IconPicker;
 }(_picker2.default);
 
-exports.default = IconPicker;
+export async functiondefault = IconPicker;
 
 /***/ }),
 /* 61 */
@@ -9776,7 +9776,7 @@ var Tooltip = function () {
   return Tooltip;
 }();
 
-exports.default = Tooltip;
+export async functiondefault = Tooltip;
 
 /***/ }),
 /* 62 */
@@ -9956,7 +9956,7 @@ var SnowTooltip = function (_BaseTooltip) {
 
 SnowTooltip.TEMPLATE = ['<a class="ql-preview" target="_blank" href="about:blank"></a>', '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">', '<a class="ql-action"></a>', '<a class="ql-remove"></a>'].join('');
 
-exports.default = SnowTheme;
+export async functiondefault = SnowTheme;
 
 /***/ }),
 /* 63 */
@@ -10137,7 +10137,7 @@ _core2.default.register({
   'ui/tooltip': _tooltip2.default
 }, true);
 
-exports.default = _core2.default;
+export async functiondefault = _core2.default;
 
 /***/ }),
 /* 64 */
@@ -10149,7 +10149,7 @@ exports.default = _core2.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.IndentClass = undefined;
+export async functionIndentClass = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10210,7 +10210,7 @@ var IndentClass = new IdentAttributor('indent', 'ql-indent', {
   whitelist: [1, 2, 3, 4, 5, 6, 7, 8]
 });
 
-exports.IndentClass = IndentClass;
+export async functionIndentClass = IndentClass;
 
 /***/ }),
 /* 65 */
@@ -10250,7 +10250,7 @@ var Blockquote = function (_Block) {
 Blockquote.blotName = 'blockquote';
 Blockquote.tagName = 'blockquote';
 
-exports.default = Blockquote;
+export async functiondefault = Blockquote;
 
 /***/ }),
 /* 66 */
@@ -10299,7 +10299,7 @@ var Header = function (_Block) {
 Header.blotName = 'header';
 Header.tagName = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
-exports.default = Header;
+export async functiondefault = Header;
 
 /***/ }),
 /* 67 */
@@ -10311,7 +10311,7 @@ exports.default = Header;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.ListItem = undefined;
+export async functiondefault = export async functionListItem = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10495,8 +10495,8 @@ List.tagName = ['OL', 'UL'];
 List.defaultChild = 'list-item';
 List.allowedChildren = [ListItem];
 
-exports.ListItem = ListItem;
-exports.default = List;
+export async functionListItem = ListItem;
+export async functiondefault = List;
 
 /***/ }),
 /* 68 */
@@ -10536,7 +10536,7 @@ var Italic = function (_Bold) {
 Italic.blotName = 'italic';
 Italic.tagName = ['EM', 'I'];
 
-exports.default = Italic;
+export async functiondefault = Italic;
 
 /***/ }),
 /* 69 */
@@ -10600,7 +10600,7 @@ var Script = function (_Inline) {
 Script.blotName = 'script';
 Script.tagName = ['SUB', 'SUP'];
 
-exports.default = Script;
+export async functiondefault = Script;
 
 /***/ }),
 /* 70 */
@@ -10640,7 +10640,7 @@ var Strike = function (_Inline) {
 Strike.blotName = 'strike';
 Strike.tagName = 'S';
 
-exports.default = Strike;
+export async functiondefault = Strike;
 
 /***/ }),
 /* 71 */
@@ -10680,7 +10680,7 @@ var Underline = function (_Inline) {
 Underline.blotName = 'underline';
 Underline.tagName = 'U';
 
-exports.default = Underline;
+export async functiondefault = Underline;
 
 /***/ }),
 /* 72 */
@@ -10778,7 +10778,7 @@ var Image = function (_Parchment$Embed) {
 Image.blotName = 'image';
 Image.tagName = 'IMG';
 
-exports.default = Image;
+export async functiondefault = Image;
 
 /***/ }),
 /* 73 */
@@ -10871,7 +10871,7 @@ Video.blotName = 'video';
 Video.className = 'ql-video';
 Video.tagName = 'IFRAME';
 
-exports.default = Video;
+export async functiondefault = Video;
 
 /***/ }),
 /* 74 */
@@ -10883,7 +10883,7 @@ exports.default = Video;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.FormulaBlot = undefined;
+export async functiondefault = export async functionFormulaBlot = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10969,8 +10969,8 @@ var Formula = function (_Module) {
   return Formula;
 }(_module2.default);
 
-exports.FormulaBlot = FormulaBlot;
-exports.default = Formula;
+export async functionFormulaBlot = FormulaBlot;
+export async functiondefault = Formula;
 
 /***/ }),
 /* 75 */
@@ -10982,7 +10982,7 @@ exports.default = Formula;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.CodeToken = exports.CodeBlock = undefined;
+export async functiondefault = export async functionCodeToken = export async functionCodeBlock = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11115,9 +11115,9 @@ Syntax.DEFAULTS = {
   interval: 1000
 };
 
-exports.CodeBlock = SyntaxCodeBlock;
-exports.CodeToken = CodeToken;
-exports.default = Syntax;
+export async functionCodeBlock = SyntaxCodeBlock;
+export async functionCodeToken = CodeToken;
+export async functiondefault = Syntax;
 
 /***/ }),
 /* 76 */
@@ -11321,7 +11321,7 @@ module.exports = "<svg viewbox=\"0 0 18 18\"> <polygon class=ql-stroke points=\"
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.BubbleTooltip = undefined;
+export async functiondefault = export async functionBubbleTooltip = undefined;
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
@@ -11474,8 +11474,8 @@ var BubbleTooltip = function (_BaseTooltip) {
 
 BubbleTooltip.TEMPLATE = ['<span class="ql-tooltip-arrow"></span>', '<div class="ql-tooltip-editor">', '<input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">', '<a class="ql-close"></a>', '</div>'].join('');
 
-exports.BubbleTooltip = BubbleTooltip;
-exports.default = BubbleTheme;
+export async functionBubbleTooltip = BubbleTooltip;
+export async functiondefault = BubbleTheme;
 
 /***/ }),
 /* 109 */

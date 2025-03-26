@@ -1,4 +1,4 @@
-const express = require('express')
+
 
 const secure_pass = (req, res, next) => {
     if (req.session.login || req.path === '/login') {
@@ -20,3 +20,5 @@ const sessionGlobals = async (req, res, next) => {
 };
 
 module.exports = { secure_pass, sessionGlobals };
+
+

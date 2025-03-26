@@ -26,6 +26,4 @@ async function criarOuAtualizarVestibular(vestibularId, novoVestibular, anoVesti
     return vestibular;
   }
   
-  module.exports = {
-    criarOuAtualizarVestibular
-  };
+module.export= criarOuAtualizarVestibular;

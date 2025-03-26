@@ -8,14 +8,6 @@
     "port": "5432"
   },
   "test": {
-"username": "ifvestjc_user",
-    "password": "boso_W{w+VKg",
-    "database": "ifvestjc_ifdb",
-    "host": "localhost",
-    "dialect": "postgres",
-    "port": "5432"
-  },
-  "production": {
     "username": "ruan177",
     "password": "0grC3HvndpJD",
     "database": "ifvest",
@@ -28,5 +20,14 @@
         "require": true
       }
     }
+  
+  },
+  "production": {
+    "username": "ifvestjc_user",
+    "password": "boso_W{w+VKg",
+    "database": "ifvestjc_ifdb",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": "5432"
   }
 }

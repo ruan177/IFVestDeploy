@@ -7,15 +7,15 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Topico.associate = (models) => {
+    Topico.belongsTo(models.Usuario, { foreignKey: 'usuarioId' });
     Topico.belongsTo(models.Area,  
       {foreignKey: 'areaId'},);
-    Topico.hasMany(models.Favorito)
-    Topico.hasMany(models.Questões);
+
+    Topico.belongsToMany(models.Questões, { through: 'questoes_topicos', foreignKey: 'topicoId' });
+
   };
 
-  Topico.associate = (models)=>{
-    Topico.hasMany(models.Video);
-}
+
 
   return Topico;
 };

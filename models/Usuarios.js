@@ -18,16 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-
-      email_secundario:{
-        type: DataTypes.STRING,
-        allowNull: true,
-      } ,
-     
+      },     
       perfil: {
         type: DataTypes.INTEGER,
         allowNull: true,
+      },
+
+      imagemPerfil:{
+        type: DataTypes.STRING,
+        allwNull: true,
       },
     },{
       tableName: 'usuarios'
@@ -35,25 +34,7 @@ module.exports = (sequelize, DataTypes) => {
   
     Usuario.associate = (models) => {
       // Associação com Comentario
-      Usuario.hasMany(models.Comentario, {
-        foreignKey: 'usuarioId',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      });
-  
-      // Associação com AreaProf
-      Usuario.hasMany(models.AreaProf, {
-        foreignKey: 'usuarioId',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      });
-  
-      // Associação com Favorito
-      Usuario.hasMany(models.Favorito, {
-        foreignKey: 'usuarioId',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      });
+
   
       // Associação com Perguntas
       Usuario.hasMany(models.Questões, {
